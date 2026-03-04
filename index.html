@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>廈門自由行助手</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+}
+
+header{
+background:#0077cc;
+color:white;
+text-align:center;
+padding:16px;
+font-size:22px;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+background:white;
+padding:16px;
+margin-bottom:12px;
+border-radius:10px;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+
+button{
+padding:10px;
+border:none;
+background:#0077cc;
+color:white;
+border-radius:6px;
+margin-top:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+廈門自由行助手
+</header>
+
+<div class="container">
+
+<div class="card">
+<h3>今日行程</h3>
+
+<p>中山路步行街</p>
+
+<button onclick="nav()">導航</button>
+
+</div>
+
+<div class="card">
+<h3>沙坡尾</h3>
+
+<button onclick="nav()">導航</button>
+
+</div>
+
+<div class="card">
+<h3>功能</h3>
+
+<p>景點地圖</p>
+<p>在地小吃</p>
+<p>飯店資訊</p>
+<p>叫車</p>
+
+</div>
+
+</div>
+
+<script>
+
+function nav(){
+
+window.open("https://uri.amap.com/navigation")
+
+}
+
+</script>
+
+</body>
+</html>
