@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>飯店推薦｜廈門自由行助手</title>
+  <title>飯店推薦｜小黑的愛心之廈門自由行助手</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -14,11 +14,13 @@
 
   <div class="card">
     <h2>精選 10 間飯店（點卡片展開）</h2>
-    <p class="small">不顯示價格，提供：導航＋官方網站（Google 搜尋）＋各大訂房網入口。</p>
+    <p class="small">
+      不顯示價格，提供：導航＋官方網站（Google 搜尋）＋各大訂房網入口（自動生成）。
+    </p>
   </div>
 
   <!-- TOP 1 -->
-  <details class="hotel" open>
+  <details class="hotel" open data-hotel="Waldorf Astoria Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">1</div>
@@ -27,23 +29,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>廈門目前最頂級的酒店之一，位於蓮坂商圈，交通便利。設計融合經典歐式與當代美學，服務細膩，是追求極致奢華體驗的首選。</p>
       <div class="small"><b>亮點：</b>頂級餐飲／高品質備品／絕佳城景</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Waldorf%20Astoria%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Waldorf+Astoria+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Waldorf%20Astoria%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Waldorf%20Astoria%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Waldorf%20Astoria%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Waldorf%20Astoria%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 2 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Conrad Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">2</div>
@@ -52,23 +56,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>位於廈門地標「世茂海峽大廈」（雙子塔）內，是廈門高空景觀代表性酒店之一。</p>
       <div class="small"><b>亮點：</b>高空海景俯瞰鼓浪嶼與演武大橋／緊鄰廈門大學與南普陀寺</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Conrad%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Conrad+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Conrad%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Conrad%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Conrad%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Conrad%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 3 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Andaz Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">3</div>
@@ -77,23 +83,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>凱悅旗下高端潮牌，設計結合現代奢華與閩南文化；位置便利，適合喜歡氛圍與質感的旅客。</p>
       <div class="small"><b>亮點：</b>強烈設計感／精緻茶點／免費迷你吧</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Andaz%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Andaz+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Andaz%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Andaz%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Andaz%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Andaz%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 4 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Seaview Resort Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">4</div>
@@ -102,23 +110,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>位於環島路，園林綠地廣、環境幽靜；度假氛圍強，適合親子與放鬆型旅行。</p>
       <div class="small"><b>亮點：</b>園林景觀／多個戶外及室內泳池／親子度假</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Seaview%20Resort%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Seaview+Resort+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Seaview%20Resort%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Seaview%20Resort%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Seaview%20Resort%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Seaview%20Resort%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 5 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Hotel Indigo Xiamen Harbour">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">5</div>
@@ -127,23 +137,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>坐落鷺江道，正對鼓浪嶼；位置強、生活機能方便，適合第一次來或想住市中心熱區的人。</p>
       <div class="small"><b>亮點：</b>近中山路／部分房型鼓浪嶼海景陽台</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Hotel%20Indigo%20Xiamen%20Harbour&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Hotel+Indigo+Xiamen+Harbour+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Hotel%20Indigo%20Xiamen%20Harbour&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Hotel%20Indigo%20Xiamen%20Harbour" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Hotel%20Indigo%20Xiamen%20Harbour" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Hotel%20Indigo%20Xiamen%20Harbour" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 6 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Kempinski Hotel Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">6</div>
@@ -152,23 +164,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>篔簹湖畔景觀優雅，屬老牌高奢五星級；服務與餐飲口碑穩，適合想住得舒適安穩的旅客。</p>
       <div class="small"><b>亮點：</b>湖景房視野／餐飲口碑（鮮釀啤酒/自助餐）／步行篔簹路</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Kempinski%20Hotel%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Kempinski+Hotel+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Kempinski%20Hotel%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Kempinski%20Hotel%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Kempinski%20Hotel%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Kempinski%20Hotel%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 7 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Lohkah Hotel & Spa Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">7</div>
@@ -177,23 +191,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>主打「避世奢華」與「極簡東方美學」，適合想遠離喧囂、專注放鬆與水療的旅客。</p>
       <div class="small"><b>亮點：</b>私人靜謐感強／放鬆與水療</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Lohkah%20Hotel%20%26%20Spa%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Lohkah+Hotel+%26+Spa+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Lohkah%20Hotel%20%26%20Spa&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Lohkah%20Hotel%20%26%20Spa" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Lohkah%20Hotel%20%26%20Spa" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Lohkah%20Hotel%20%26%20Spa" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 8 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Swiss Grand Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">8</div>
@@ -202,23 +218,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>緊鄰中山路與鷺江道，動線強、方便度高；第一次來廈門住這區很省時間。</p>
       <div class="small"><b>亮點：</b>下樓步行街／前往鼓浪嶼碼頭方便</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Swiss%20Grand%20Xiamen&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Swiss+Grand+Xiamen+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Swiss%20Grand%20Xiamen&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Swiss%20Grand%20Xiamen" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Swiss%20Grand%20Xiamen" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Swiss%20Grand%20Xiamen" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 9 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Joyze Hotel Xiamen Curio Collection by Hilton">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">9</div>
@@ -227,23 +245,25 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>設計融合「小漁村」與「光影」元素，風格獨特；想住得有個性、又接近環島路氛圍很適合。</p>
       <div class="small"><b>亮點：</b>文青設計風格／年輕族群友善／環島路氛圍</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Joyze%20Hotel%20Xiamen%20Curio%20Collection%20by%20Hilton&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Joyze+Hotel+Xiamen+Curio+Collection+by+Hilton+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Joyze%20Hotel%20Xiamen%20Curio%20Collection%20by%20Hilton&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Joyze%20Hotel%20Xiamen%20Curio%20Collection%20by%20Hilton" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Joyze%20Hotel%20Xiamen%20Curio%20Collection%20by%20Hilton" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Joyze%20Hotel%20Xiamen%20Curio%20Collection%20by%20Hilton" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
 
   <!-- TOP 10 -->
-  <details class="hotel">
+  <details class="hotel" data-hotel="Lujiang Harbourview Hotel Xiamen">
     <summary>
       <div class="hotel-title">
         <div class="hotel-top">10</div>
@@ -252,17 +272,19 @@
       </div>
       <div class="chev">›</div>
     </summary>
+
     <div class="hotel-body">
       <p><b>推薦理由：</b>充滿歷史底蘊的老字號飯店；露台餐廳能邊吃點心邊看鼓浪嶼景，適合想住「老廈門味道」的人。</p>
       <div class="small"><b>亮點：</b>歷史地位／傳統服務／中山路門戶位置／露台景觀餐飲</div>
 
       <div class="actions" style="margin-top:14px; flex-wrap:wrap;">
         <a class="btn" href="https://uri.amap.com/search?keyword=Lujiang%20Harbourview%20Hotel&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app" target="_blank" rel="noopener">導航</a>
-        <a class="btn secondary" href="https://www.google.com/search?q=Lujiang+Harbourview+Hotel+%E5%AE%98%E6%96%B9%E7%B6%B2%E7%AB%99" target="_blank" rel="noopener">官方網站</a>
-        <a class="btn secondary" href="https://www.booking.com/searchresults.html?ss=Lujiang%20Harbourview%20Hotel&dest_type=city&dest_id=-1904748" target="_blank" rel="noopener">Booking</a>
-        <a class="btn secondary" href="https://www.agoda.com/zh-tw/search?city=1904748&text=Lujiang%20Harbourview%20Hotel" target="_blank" rel="noopener">Agoda</a>
-        <a class="btn secondary" href="https://www.trip.com/hotels/list?city=477&searchWord=Lujiang%20Harbourview%20Hotel" target="_blank" rel="noopener">Trip.com</a>
-        <a class="btn secondary" href="https://www.expedia.com/Hotel-Search?destination=Lujiang%20Harbourview%20Hotel" target="_blank" rel="noopener">Expedia</a>
+        <a class="btn secondary official" href="#" target="_blank" rel="noopener">官方網站</a>
+
+        <a class="btn secondary booking" href="#" target="_blank" rel="noopener">Booking</a>
+        <a class="btn secondary agoda" href="#" target="_blank" rel="noopener">Agoda</a>
+        <a class="btn secondary trip" href="#" target="_blank" rel="noopener">Trip.com</a>
+        <a class="btn secondary expedia" href="#" target="_blank" rel="noopener">Expedia</a>
       </div>
     </div>
   </details>
@@ -282,5 +304,48 @@
   </div>
 
 </div>
+
+<script>
+(() => {
+  function q(card, sel) { return card.querySelector(sel); }
+  function safeSetHref(el, href) { if (el) el.href = href; }
+
+  function buildLinks(hotelName) {
+    const n = hotelName.trim();
+
+    // ✅ 不用任何 city/dest_id，直接用「飯店名稱」搜尋，命中率最高也最耐用
+    return {
+      official: "https://www.google.com/search?q=" + encodeURIComponent(n + " 官方網站"),
+      booking: "https://www.booking.com/searchresults.html?ss=" + encodeURIComponent(n),
+      agoda: "https://www.agoda.com/search?textToSearch=" + encodeURIComponent(n),
+      trip: "https://www.trip.com/hotels/list?keyword=" + encodeURIComponent(n),
+      expedia: "https://www.expedia.com/Hotel-Search?destination=" + encodeURIComponent(n),
+    };
+  }
+
+  function init() {
+    const cards = document.querySelectorAll("details.hotel[data-hotel]");
+    cards.forEach(card => {
+      const name = card.getAttribute("data-hotel");
+      if (!name) return;
+
+      const links = buildLinks(name);
+
+      safeSetHref(q(card, ".official"), links.official);
+      safeSetHref(q(card, ".booking"), links.booking);
+      safeSetHref(q(card, ".agoda"), links.agoda);
+      safeSetHref(q(card, ".trip"), links.trip);
+      safeSetHref(q(card, ".expedia"), links.expedia);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
