@@ -1,71 +1,140 @@
-<!DOCTYPE html><html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="manifest" href="manifest.json">
 <title>廈門自由行助手</title>
 <link rel="stylesheet" href="style.css" />
-</head><body><header>廈門自由行助手</header><div class="container"><div class="card">
-<h3>📅 廈門 4 天行程（摘要）</h3><ul class="list"><li>
-<div>
-<div class="item-title">Day 1｜中山路步行街</div>
-<div class="item-sub">逛街小吃、夜景</div>
-</div><div class="actions">
-<a class="btn" href="https://uri.amap.com/search?keyword=中山路步行街&city=厦门&view=map&src=xiamen-trip-app">導航</a>
+</head>
+
+<body>
+<header>廈門自由行助手</header>
+
+<div class="container">
+
+  <div class="card">
+    <h3>📅 廈門 4 天行程（摘要）</h3>
+
+    <ul class="list" id="itinerarySummary">
+      <!-- JS 會填入 -->
+    </ul>
+
+    <div class="small">
+      提示：新增景點請到「行程」頁面；新增後首頁摘要會自動同步（同一台手機/同一個瀏覽器）。
+    </div>
+
+    <div class="actions" style="margin-top:12px;">
+      <a class="btn secondary" href="itinerary.html">前往行程頁</a>
+    </div>
+  </div>
+
+  <div class="card menu">
+    <h3>功能</h3>
+
+    <a href="itinerary.html">📅 行程 <span class="arrow">›</span></a>
+    <a href="food.html">🍜 在地美食 <span class="arrow">›</span></a>
+    <a href="hotel.html">🏨 飯店推薦 <span class="arrow">›</span></a>
+    <a href="taxi.html">🚕 叫車 <span class="arrow">›</span></a>
+    <a href="transport.html">🚇 交通 <span class="arrow">›</span></a>
+    <a href="souvenir.html">🎁 名產 <span class="arrow">›</span></a>
+    <a href="tips.html">⚠ 注意事項 <span class="arrow">›</span></a>
+  </div>
+
+  <div class="card">
+    <h3>離線模式</h3>
+    <p>本 App 已加入離線快取：首次開啟後，常用頁面可在無網路時瀏覽。</p>
+    <div class="small">導航與外部連結仍需要網路。</div>
+  </div>
+
 </div>
-</li><li>
-<div>
-<div class="item-title">Day 2｜鼓浪嶼</div>
-<div class="item-sub">海島散步、老洋樓</div>
-</div><div class="actions">
-<a class="btn" href="https://uri.amap.com/search?keyword=鼓浪屿&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-</div>
-</li><li>
-<div>
-<div class="item-title">Day 3｜南普陀寺 / 廈門大學</div>
-<div class="item-sub">人文景點＋校園</div>
-</div><div class="actions">
-<a class="btn" href="https://uri.amap.com/search?keyword=南普陀寺&city=厦门&view=map&src=xiamen-trip-app">南普陀</a>
-<a class="btn" href="https://uri.amap.com/search?keyword=厦门大学&city=厦门&view=map&src=xiamen-trip-app">廈大</a>
-</div>
-</li><li>
-<div>
-<div class="item-title">Day 4｜曾厝垵</div>
-<div class="item-sub">海邊市集、文青小店</div>
-</div><div class="actions">
-<a class="btn" href="https://uri.amap.com/search?keyword=曾厝垵&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-</div>
-</li></ul><div class="small">
-提示：點擊「導航」會使用高德地圖搜尋目的地（需網路）。
-</div></div><div class="card menu"><h3>功能</h3><a href="itinerary.html">
-📅 行程
-<span class="arrow">›</span>
-</a><a href="food.html">
-🍜 在地美食
-<span class="arrow">›</span>
-</a><a href="hotel.html">
-🏨 飯店推薦
-<span class="arrow">›</span>
-</a><a href="taxi.html">
-🚕 叫車
-<span class="arrow">›</span>
-</a><a href="transport.html">
-🚇 交通
-<span class="arrow">›</span>
-</a><a href="souvenir.html">
-🎁 名產
-<span class="arrow">›</span>
-</a><a href="tips.html">
-⚠ 注意事項
-<span class="arrow">›</span>
-</a></div><div class="card">
-<h3>離線模式</h3><p>
-本 App 已加入離線快取：首次開啟後，常用頁面可在無網路時瀏覽。
-</p><div class="small">
-導航與外部連結仍需要網路。
-</div></div></div><script>
+
+<script>
+(() => {
+  const STORAGE_KEY = "xiamen_custom_spots_v1";
+
+  const DAYS = [
+    { day: 1, title: "抵達廈門與中山路之夜", base: ["中山路步行街","八市（第八市場）","演武大橋","雙子塔"] , city: "廈門" },
+    { day: 2, title: "鼓浪嶼與高空全景", base: ["鼓浪嶼","鐘鼓索道","沙坡尾"] , city: "廈門" },
+    { day: 3, title: "學術氣息與網紅植物園", base: ["南普陀寺","廈門大學","廈門植物園","環島路","曾厝垵"] , city: "廈門" },
+    { day: 4, title: "最後巡禮與返程回高", base: ["頂澳仔貓街","鐵路文化公園","廈門五通碼頭","金門水頭碼頭","金門機場"] , city: "金門" },
+  ];
+
+  function loadAll() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+    catch { return {}; }
+  }
+
+  function amapUrl(keyword, city) {
+    const k = encodeURIComponent(keyword.trim());
+    const c = encodeURIComponent((city || "").trim());
+    return `https://uri.amap.com/search?keyword=${k}${c ? `&city=${c}` : ""}&view=map&src=xiamen-trip-app`;
+  }
+
+  function render() {
+    const all = loadAll();
+    const ul = document.getElementById("itinerarySummary");
+    if (!ul) return;
+
+    ul.innerHTML = "";
+
+    DAYS.forEach(d => {
+      const custom = (all[d.day] || []).map(x => x.name).filter(Boolean);
+      const combined = [...d.base, ...custom];
+
+      // 摘要只顯示前 3 個點，後面用「+N」表示
+      const shown = combined.slice(0, 3);
+      const rest = Math.max(0, combined.length - shown.length);
+
+      const li = document.createElement("li");
+
+      const left = document.createElement("div");
+      left.className = "list-left";
+
+      const t = document.createElement("div");
+      t.className = "item-title";
+      t.textContent = `Day ${d.day}｜${d.title}`;
+
+      const sub = document.createElement("div");
+      sub.className = "item-sub";
+      sub.textContent = shown.join(" ・ ") + (rest ? ` ・ +${rest}` : "") + (custom.length ? `（你新增 ${custom.length}）` : "");
+
+      left.appendChild(t);
+      left.appendChild(sub);
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      // 這個導航按鈕：用「第一個景點」作為快速導航入口（含新增也可能變第一個）
+      const quick = combined[0] || d.base[0] || d.title;
+      const a = document.createElement("a");
+      a.className = "btn";
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.href = amapUrl(quick, d.city);
+      a.textContent = "導航";
+
+      actions.appendChild(a);
+
+      li.appendChild(left);
+      li.appendChild(actions);
+
+      ul.appendChild(li);
+    });
+  }
+
+  render();
+
+  // 如果使用者從行程頁回到首頁（同分頁）也能即時更新
+  window.addEventListener("focus", render);
+})();
+</script>
+
+<script>
 if ("serviceWorker" in navigator) {
-navigator.serviceWorker.register("./sw.js").catch(console.error);
+  navigator.serviceWorker.register("./sw.js").catch(console.error);
 }
-</script></body>
+</script>
+
+</body>
 </html>
