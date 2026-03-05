@@ -350,3 +350,44 @@ cursor:pointer;
   overflow-wrap:anywhere;
   word-break:break-word;
 }
+
+/* App icon grid */
+
+.app-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-top:10px;
+}
+
+.app-grid a{
+text-decoration:none;
+color:var(--text);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:12px 6px;
+border-radius:16px;
+}
+
+.app-grid a:active{
+background:rgba(0,0,0,0.05);
+}
+
+.app-icon{
+font-size:28px;
+margin-bottom:6px;
+}
+
+.app-label{
+font-size:12px;
+font-weight:700;
+text-align:center;
+}
+
+@media (max-width:420px){
+.app-grid{
+grid-template-columns:repeat(4,1fr);
+}
+}
