@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>景點地圖</title>
+
+<title>廈門景點</title>
 
 <style>
 
 body{
-font-family:Arial;
+
+font-family:-apple-system;
+
+background:#f2f2f7;
+
 padding:20px;
+
 }
 
-h1{
-color:#0077cc;
+.card{
+
+background:white;
+
+padding:16px;
+
+margin-bottom:12px;
+
+border-radius:12px;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+
 }
 
 button{
-padding:10px;
-background:#0077cc;
+
+background:#007aff;
+
 color:white;
+
 border:none;
-border-radius:6px;
+
+padding:10px;
+
+border-radius:8px;
+
 }
 
 </style>
@@ -30,24 +53,52 @@ border-radius:6px;
 
 <body>
 
-<h1>廈門景點</h1>
+<h2>🗺 廈門景點</h2>
 
-<p>中山路步行街</p>
+<div class="card">
+
+中山路步行街
+
+<br><br>
+
 <button onclick="nav()">導航</button>
 
-<p>沙坡尾</p>
+</div>
+
+<div class="card">
+
+沙坡尾
+
+<br><br>
+
 <button onclick="nav()">導航</button>
 
-<p>南普陀寺</p>
+</div>
+
+<div class="card">
+
+南普陀寺
+
+<br><br>
+
 <button onclick="nav()">導航</button>
+
+</div>
+
+<br>
+
+<a href="index.html">← 回首頁</a>
 
 <script>
 
 function nav(){
+
 window.open("https://uri.amap.com/navigation")
+
 }
 
 </script>
 
 </body>
+
 </html>
