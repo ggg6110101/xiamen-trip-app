@@ -1,6 +1,6 @@
 // 簡易離線快取（App Shell）
-// 注意：若你之後新增頁面/檔案，記得更新 PRECACHE 清單與 CACHE_NAME 版本
-const CACHE_NAME = "xiamen-trip-app-v1";
+// ✅ v2：修正 CSS/JS 長期吃舊快取問題
+const CACHE_NAME = "xiamen-trip-app-v2";
 
 const PRECACHE = [
   "./",
@@ -18,9 +18,7 @@ const PRECACHE = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE)));
   self.skipWaiting();
 });
 
@@ -33,17 +31,26 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// 對 HTML：優先網路、失敗用快取（讓內容可更新）
-// 對其他靜態檔：優先快取、沒有再抓網路
+// HTML：network-first（確保內容可更新）
+// CSS/JS/圖片：stale-while-revalidate（先快取、背景更新）
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // 只處理同源
   if (url.origin !== self.location.origin) return;
 
-  const isHTML =
-    req.headers.get("accept") && req.headers.get("accept").includes("text/html");
+  const accept = req.headers.get("accept") || "";
+  const isHTML = accept.includes("text/html");
+
+  const isStatic =
+    url.pathname.endsWith(".css") ||
+    url.pathname.endsWith(".js") ||
+    url.pathname.endsWith(".png") ||
+    url.pathname.endsWith(".jpg") ||
+    url.pathname.endsWith(".jpeg") ||
+    url.pathname.endsWith(".webp") ||
+    url.pathname.endsWith(".svg") ||
+    url.pathname.endsWith(".json");
 
   if (isHTML) {
     event.respondWith(
@@ -58,11 +65,26 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  if (isStatic) {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        const fetchPromise = fetch(req)
+          .then((res) => {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+            return res;
+          })
+          .catch(() => cached);
+
+        // 有快取就先回快取，並在背景更新
+        return cached || fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // 其他：沿用 cache fallback
   event.respondWith(
-    caches.match(req).then((cached) => cached || fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
-      return res;
-    }))
+    caches.match(req).then((cached) => cached || fetch(req))
   );
 });
