@@ -256,11 +256,21 @@ button.btn{ cursor:pointer; }
   color:var(--text);
   line-height:1.2;
 }
+/* 預設：可換行（避免注意事項/醫療資訊文字被吃掉） */
 .item-sub{
   margin-top:6px;
   color:var(--muted);
   font-size:13px;
-  line-height:1.35;
+  line-height:1.45;
+  white-space:normal;
+  overflow:visible;
+  text-overflow:unset;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+/* 只有首頁摘要：維持單行省略 */
+.summary .item-sub{
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
