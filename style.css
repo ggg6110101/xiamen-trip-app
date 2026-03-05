@@ -417,3 +417,63 @@ font-size:14px;
 margin-top:4px;
 color:#444;
 }
+
+/* ===== Bottom Tab Bar (iOS-like) ===== */
+
+/* 避免內容被底部工具列遮住 */
+body{ padding-bottom: 92px; }
+
+.tabbar{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 12px 14px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(15,23,42,.07);
+  z-index: 999;
+}
+
+.tabbar .tabs{
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.tabbar a{
+  text-decoration: none;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border-radius: 14px;
+}
+
+.tabbar a:active{
+  background: rgba(0,0,0,0.06);
+}
+
+.tabbar .icon{
+  font-size: 18px;
+  line-height: 1;
+}
+
+.tabbar .label{
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+/* Active tab */
+.tabbar a.active{
+  color: var(--brand);
+  background: rgba(0,122,255,.10);
+  border: 1px solid rgba(0,122,255,.15);
+}
