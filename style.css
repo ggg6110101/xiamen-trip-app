@@ -167,3 +167,48 @@ details.hotel[open] .chev{ transform:rotate(90deg); }
 
 .hotel-body p{ margin:10px 0; color:var(--text); }
 .hotel-body .small{ color:var(--muted); }
+
+/* --- Spot mini cards (for itinerary) --- */
+.spot-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+  margin-top:12px;
+}
+
+@media (max-width:420px){
+  .spot-grid{ grid-template-columns:1fr; }
+}
+
+.spot-card{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  border:1px solid rgba(15,23,42,0.08);
+  border-radius:var(--radius);
+  background:var(--card);
+  box-shadow:var(--shadow);
+  padding:12px;
+}
+
+.spot-card:hover{ transform:translateY(-1px); }
+
+.spot-title{
+  font-weight:800;
+  margin:0 0 6px 0;
+}
+
+.spot-sub{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.spot-tag{
+  display:inline-block;
+  margin-top:10px;
+  font-size:12px;
+  color:var(--brand);
+  font-weight:700;
+}
