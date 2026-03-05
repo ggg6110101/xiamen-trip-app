@@ -1,6 +1,6 @@
 {
-"name": "廈門自由行助手",
-"short_name": "廈門旅行",
+"name": "小黑的愛心之廈門自由行助手",
+"short_name": "小黑廈門助手"
 "start_url": "index.html",
 "display": "standalone",
 "background_color": "#007aff",
