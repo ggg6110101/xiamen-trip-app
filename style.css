@@ -274,3 +274,16 @@ button.btn{ cursor:pointer; }
   color:var(--muted);
   font-size:13px;
 }
+
+.spot-card{
+position:relative;
+}
+
+.spot-delete{
+position:absolute;
+top:8px;
+right:10px;
+font-size:16px;
+color:#ff3b30;
+cursor:pointer;
+}
