@@ -14,337 +14,255 @@
 <div class="container">
 
 <div class="card">
-<h2>使用說明</h2>
-<p class="small">
-旅遊期間若需要醫療服務，可參考以下醫院與緊急聯絡資訊。
-導航需要網路。
-</p>
+  <h2>使用說明</h2>
+  <p class="small">
+    旅遊期間若需要醫療服務，可參考以下醫院與緊急聯絡資訊。<br>
+    「最近醫院」需要定位授權與網路。
+  </p>
+
+  <div class="actions" style="margin-top:12px; flex-wrap:wrap;">
+    <button class="btn" type="button" id="btnNearestHospital">📍 最近醫院</button>
+    <a class="btn secondary" target="_blank" rel="noopener"
+       href="https://uri.amap.com/search?keyword=%E5%8C%BB%E9%99%A2&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
+      廈門醫院搜尋
+    </a>
+  </div>
+
+  <div class="small" id="nearestHint" style="margin-top:10px;"></div>
 </div>
 
 
 <!-- 醫院資訊 -->
 <details class="hotel" open>
+  <summary>
+    <div class="hotel-title">
+      <div class="hotel-top">醫院</div>
+      <div class="hotel-name">思明區主要醫院</div>
+      <div class="hotel-sub">大型三甲醫院，醫療資源最完整</div>
+    </div>
+    <div class="chev">›</div>
+  </summary>
 
-<summary>
-<div class="hotel-title">
-<div class="hotel-top">醫院</div>
-<div class="hotel-name">思明區主要醫院</div>
-<div class="hotel-sub">大型三甲醫院，醫療資源最完整</div>
-</div>
+  <div class="hotel-body">
+    <div class="spot-grid">
 
-<div class="chev">›</div>
-</summary>
+      <a class="spot-card" target="_blank" rel="noopener"
+         href="https://uri.amap.com/search?keyword=厦门大学附属第一医院&city=厦门&view=map&src=xiamen-trip-app">
+        <div class="spot-title">廈門大學附屬第一醫院（鎮海路總院）</div>
+        <p class="spot-sub">靠近中山路、南普陀｜三甲醫院｜應急能力強</p>
+        <span class="spot-tag">導航 →</span>
+      </a>
 
-<div class="hotel-body">
+      <a class="spot-card" target="_blank" rel="noopener"
+         href="https://uri.amap.com/search?keyword=厦门大学附属中山医院&city=厦门&view=map&src=xiamen-trip-app">
+        <div class="spot-title">廈門大學附屬中山醫院</div>
+        <p class="spot-sub">湖濱南路｜三甲醫院｜急診/內外科完善</p>
+        <span class="spot-tag">導航 →</span>
+      </a>
 
-<div class="spot-grid">
+      <a class="spot-card" target="_blank" rel="noopener"
+         href="https://uri.amap.com/search?keyword=厦门市中医院&city=厦门&view=map&src=xiamen-trip-app">
+        <div class="spot-title">廈門市中醫院</div>
+        <p class="spot-sub">中醫調理/針灸｜筋骨損傷可考慮</p>
+        <span class="spot-tag">導航 →</span>
+      </a>
 
-<a class="spot-card" target="_blank"
-href="https://uri.amap.com/search?keyword=厦门大学附属第一医院&city=厦门">
-
-<div class="spot-title">
-廈門大學附屬第一醫院
-</div>
-
-<p class="spot-sub">
-靠近中山路、南普陀  
-廈門最強三甲醫院之一
-</p>
-
-<span class="spot-tag">
-導航 →
-</span>
-
-</a>
-
-
-<a class="spot-card" target="_blank"
-href="https://uri.amap.com/search?keyword=厦门大学附属中山医院&city=厦门">
-
-<div class="spot-title">
-廈門大學附屬中山醫院
-</div>
-
-<p class="spot-sub">
-位於湖濱南路  
-急診與內外科醫療完整
-</p>
-
-<span class="spot-tag">
-導航 →
-</span>
-
-</a>
-
-
-<a class="spot-card" target="_blank"
-href="https://uri.amap.com/search?keyword=厦门市中医院&city=厦门">
-
-<div class="spot-title">
-廈門市中醫院
-</div>
-
-<p class="spot-sub">
-適合中醫調理  
-針灸 / 筋骨損傷
-</p>
-
-<span class="spot-tag">
-導航 →
-</span>
-
-</a>
-
-</div>
-
-</div>
+    </div>
+  </div>
 </details>
-
 
 
 <!-- 就醫提醒 -->
-
 <details class="hotel">
+  <summary>
+    <div class="hotel-title">
+      <div class="hotel-top">提醒</div>
+      <div class="hotel-name">台灣旅客就醫注意事項</div>
+      <div class="hotel-sub">就醫流程與保險/收據保存</div>
+    </div>
+    <div class="chev">›</div>
+  </summary>
 
-<summary>
-<div class="hotel-title">
-<div class="hotel-top">提醒</div>
-<div class="hotel-name">台灣旅客就醫注意事項</div>
-<div class="hotel-sub">就醫流程與保險資訊</div>
-</div>
+  <div class="hotel-body">
+    <ul class="list">
+      <li>
+        <div>
+          <div class="item-title">台胞證</div>
+          <div class="item-sub">大陸醫院掛號（分診）需實名制，請隨身攜帶台胞證。</div>
+        </div>
+      </li>
 
-<div class="chev">›</div>
-</summary>
+      <li>
+        <div>
+          <div class="item-title">自費與保險</div>
+          <div class="item-sub">通常需先全額自費，務必保留診斷證明、收據、藥單等原件。</div>
+        </div>
+      </li>
 
-<div class="hotel-body">
+      <li>
+        <div>
+          <div class="item-title">健保核退</div>
+          <div class="item-sub">若屬不可預期緊急傷病，回台可申請「自墊醫療費用核退」。</div>
+        </div>
+      </li>
 
-<ul class="list">
-
-<li>
-<div>
-<div class="item-title">
-攜帶台胞證
-</div>
-
-<div class="item-sub">
-大陸醫院掛號需要實名制。
-</div>
-</div>
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-先自費再申請保險
-</div>
-
-<div class="item-sub">
-請保留診斷證明、收據、藥單。
-</div>
-</div>
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-健保核退
-</div>
-
-<div class="item-sub">
-若屬緊急醫療，回台可向健保局申請醫療費核退。
-</div>
-</div>
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-建議購買旅平險
-</div>
-
-<div class="item-sub">
-最好包含海外醫療與緊急醫療轉送。
-</div>
-</div>
-</li>
-
-</ul>
-
-</div>
-
+      <li>
+        <div>
+          <div class="item-title">旅平險</div>
+          <div class="item-sub">建議投保含「海外突發疾病醫療」並確認是否含緊急醫療轉運。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </details>
-
 
 
 <!-- 緊急電話 -->
-
 <details class="hotel">
+  <summary>
+    <div class="hotel-title">
+      <div class="hotel-top">緊急</div>
+      <div class="hotel-name">緊急聯絡電話</div>
+      <div class="hotel-sub">救護/報警/海基會協助</div>
+    </div>
+    <div class="chev">›</div>
+  </summary>
 
-<summary>
-<div class="hotel-title">
-<div class="hotel-top">緊急</div>
-<div class="hotel-name">緊急聯絡電話</div>
-<div class="hotel-sub">醫療 / 警察 / 緊急服務</div>
-</div>
+  <div class="hotel-body">
+    <ul class="list">
+      <li>
+        <div>
+          <div class="item-title">廈門急救中心</div>
+          <div class="item-sub">120</div>
+        </div>
+        <a class="btn" href="tel:120">撥號</a>
+      </li>
 
-<div class="chev">›</div>
-</summary>
+      <li>
+        <div>
+          <div class="item-title">廈門報警熱線</div>
+          <div class="item-sub">110</div>
+        </div>
+        <a class="btn" href="tel:110">撥號</a>
+      </li>
 
-<div class="hotel-body">
+      <li>
+        <div>
+          <div class="item-title">金門火警/救護</div>
+          <div class="item-sub">119</div>
+        </div>
+        <a class="btn" href="tel:119">撥號</a>
+      </li>
 
-<ul class="list">
+      <li>
+        <div>
+          <div class="item-title">金門報警</div>
+          <div class="item-sub">110</div>
+        </div>
+        <a class="btn" href="tel:110">撥號</a>
+      </li>
 
-<li>
-<div>
-<div class="item-title">
-廈門急救中心
-</div>
-
-<div class="item-sub">
-120
-</div>
-</div>
-
-<a class="btn" href="tel:120">撥號</a>
-
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-廈門報警
-</div>
-
-<div class="item-sub">
-110
-</div>
-</div>
-
-<a class="btn" href="tel:110">撥號</a>
-
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-金門救護 / 火警
-</div>
-
-<div class="item-sub">
-119
-</div>
-</div>
-
-<a class="btn" href="tel:119">撥號</a>
-
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-海基會緊急服務
-</div>
-
-<div class="item-sub">
-+886-2-2533-9995
-</div>
-</div>
-
-<a class="btn" href="tel:+886225339995">撥號</a>
-
-</li>
-
-</ul>
-
-</div>
-
+      <li>
+        <div>
+          <div class="item-title">海基會緊急服務專線</div>
+          <div class="item-sub">+886-2-2533-9995</div>
+        </div>
+        <a class="btn" href="tel:+886225339995">撥號</a>
+      </li>
+    </ul>
+  </div>
 </details>
-
 
 
 <!-- 常備藥 -->
-
 <details class="hotel">
+  <summary>
+    <div class="hotel-title">
+      <div class="hotel-top">藥品</div>
+      <div class="hotel-name">備用藥品建議</div>
+      <div class="hotel-sub">出發前可準備簡單常備藥包</div>
+    </div>
+    <div class="chev">›</div>
+  </summary>
 
-<summary>
-<div class="hotel-title">
-<div class="hotel-top">藥品</div>
-<div class="hotel-name">旅行常備藥建議</div>
-<div class="hotel-sub">出發前建議準備</div>
-</div>
-
-<div class="chev">›</div>
-</summary>
-
-<div class="hotel-body">
-
-<ul class="list">
-
-<li>
-<div>
-<div class="item-title">
-腸胃藥
-</div>
-
-<div class="item-sub">
-廈門小吃與海鮮多，可能水土不服。
-</div>
-</div>
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-感冒藥 / 止痛藥
-</div>
-
-<div class="item-sub">
-旅途疲勞或氣候變化可能需要。
-</div>
-</div>
-</li>
-
-
-<li>
-<div>
-<div class="item-title">
-外用藥
-</div>
-
-<div class="item-sub">
-創可貼、酒精棉片。
-</div>
-</div>
-</li>
-
-</ul>
-
-</div>
-
+  <div class="hotel-body">
+    <ul class="list">
+      <li>
+        <div>
+          <div class="item-title">腸胃藥</div>
+          <div class="item-sub">小吃/海鮮多，可能水土不服。</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="item-title">感冒/解熱鎮痛藥</div>
+          <div class="item-sub">應對疲勞、天氣變化、發燒/頭痛。</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="item-title">外用藥</div>
+          <div class="item-sub">創可貼、酒精棉片等。</div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </details>
 
 
-
 <div class="footer-nav">
-
-<a class="btn secondary" href="index.html">
-← 回首頁
-</a>
-
-<span class="small">
-離線可查看
-</span>
-
+  <a class="btn secondary" href="index.html">← 回首頁</a>
+  <span class="small">離線可查看｜外部連結需網路</span>
 </div>
 
 </div>
+
+<script>
+(() => {
+  const btn = document.getElementById("btnNearestHospital");
+  const hint = document.getElementById("nearestHint");
+
+  function setHint(msg) {
+    if (hint) hint.textContent = msg || "";
+  }
+
+  // 以定位點為中心，搜尋附近「醫院」
+  function amapNearbyHospitalUrl(lng, lat) {
+    const loc = `${lng},${lat}`;
+    const keyword = encodeURIComponent("医院");
+    return `https://uri.amap.com/search?keyword=${keyword}&location=${encodeURIComponent(loc)}&radius=5000&view=map&src=xiamen-trip-app`;
+  }
+
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      alert("此裝置不支援定位功能。");
+      return;
+    }
+
+    setHint("正在取得定位…請允許定位權限");
+    btn.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { longitude, latitude } = pos.coords;
+        setHint("已取得定位，將開啟附近醫院搜尋…");
+        const url = amapNearbyHospitalUrl(longitude, latitude);
+        window.open(url, "_blank", "noopener");
+        btn.disabled = false;
+      },
+      (err) => {
+        btn.disabled = false;
+        setHint("");
+        alert("無法取得定位（可能未授權或訊號不佳）。可改用「廈門醫院搜尋」按鈕。");
+        console.error(err);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+    );
+  });
+})();
+</script>
 
 </body>
 </html>
