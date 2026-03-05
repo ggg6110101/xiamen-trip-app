@@ -1,91 +1,71 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE html><html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="manifest" href="manifest.json">
-  <title>廈門自由行助手</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-<header>廈門自由行助手</header>
-
-<div class="container">
-
-  <div class="card">
-    <h3>📅 廈門 4 天行程（摘要）</h3>
-    <ul class="list">
-      <li>
-        <div>
-          <div class="item-title">Day 1｜中山路步行街</div>
-          <div class="item-sub">逛街小吃、夜景</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=中山路步行街&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 2｜鼓浪嶼</div>
-          <div class="item-sub">海邊散步、老洋樓</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=鼓浪屿&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 3｜南普陀寺 / 廈門大學</div>
-          <div class="item-sub">人文景點＋校園周邊</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=南普陀寺&city=厦门&view=map&src=xiamen-trip-app">南普陀</a>
-          <a class="btn" href="https://uri.amap.com/search?keyword=厦门大学&city=厦门&view=map&src=xiamen-trip-app">廈大</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 4｜曾厝垵</div>
-          <div class="item-sub">文青市集、海邊、拍照</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=曾厝垵&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-        </div>
-      </li>
-    </ul>
-    <div class="small">提示：點「導航」會用高德地圖搜尋目的地（需網路）。</div>
-  </div>
-
-  <div class="card menu">
-    <h3>功能</h3>
-    <a href="itinerary.html">📅 行程 <span class="arrow">›</span></a>
-    <a href="map.html">🗺 景點地圖 <span class="arrow">›</span></a>
-    <a href="food.html">🍜 在地美食 <span class="arrow">›</span></a>
-    <a href="hotel.html">🏨 飯店推薦 <span class="arrow">›</span></a>
-    <a href="taxi.html">🚕 叫車 <span class="arrow">›</span></a>
-    <a href="transport.html">🚇 交通 <span class="arrow">›</span></a>
-    <a href="souvenir.html">🎁 名產 <span class="arrow">›</span></a>
-    <a href="tips.html">⚠ 注意事項 <span class="arrow">›</span></a>
-  </div>
-
-  <div class="card">
-    <h3>離線模式</h3>
-    <p>本 App 已加入離線快取：首次開啟後，常用頁面可在無網路時瀏覽（導航/外部連結仍需網路）。</p>
-    <div class="small">若你更新檔案，重新整理一次即可讓快取更新。</div>
-  </div>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="manifest" href="manifest.json">
+<title>廈門自由行助手</title>
+<link rel="stylesheet" href="style.css" />
+</head><body><header>廈門自由行助手</header><div class="container"><div class="card">
+<h3>📅 廈門 4 天行程（摘要）</h3><ul class="list"><li>
+<div>
+<div class="item-title">Day 1｜中山路步行街</div>
+<div class="item-sub">逛街小吃、夜景</div>
+</div><div class="actions">
+<a class="btn" href="https://uri.amap.com/search?keyword=中山路步行街&city=厦门&view=map&src=xiamen-trip-app">導航</a>
 </div>
-
-<script>
-  // 註冊 Service Worker（離線快取）
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js").catch(console.error);
-  }
-</script>
-
-</body>
+</li><li>
+<div>
+<div class="item-title">Day 2｜鼓浪嶼</div>
+<div class="item-sub">海島散步、老洋樓</div>
+</div><div class="actions">
+<a class="btn" href="https://uri.amap.com/search?keyword=鼓浪屿&city=厦门&view=map&src=xiamen-trip-app">導航</a>
+</div>
+</li><li>
+<div>
+<div class="item-title">Day 3｜南普陀寺 / 廈門大學</div>
+<div class="item-sub">人文景點＋校園</div>
+</div><div class="actions">
+<a class="btn" href="https://uri.amap.com/search?keyword=南普陀寺&city=厦门&view=map&src=xiamen-trip-app">南普陀</a>
+<a class="btn" href="https://uri.amap.com/search?keyword=厦门大学&city=厦门&view=map&src=xiamen-trip-app">廈大</a>
+</div>
+</li><li>
+<div>
+<div class="item-title">Day 4｜曾厝垵</div>
+<div class="item-sub">海邊市集、文青小店</div>
+</div><div class="actions">
+<a class="btn" href="https://uri.amap.com/search?keyword=曾厝垵&city=厦门&view=map&src=xiamen-trip-app">導航</a>
+</div>
+</li></ul><div class="small">
+提示：點擊「導航」會使用高德地圖搜尋目的地（需網路）。
+</div></div><div class="card menu"><h3>功能</h3><a href="itinerary.html">
+📅 行程
+<span class="arrow">›</span>
+</a><a href="food.html">
+🍜 在地美食
+<span class="arrow">›</span>
+</a><a href="hotel.html">
+🏨 飯店推薦
+<span class="arrow">›</span>
+</a><a href="taxi.html">
+🚕 叫車
+<span class="arrow">›</span>
+</a><a href="transport.html">
+🚇 交通
+<span class="arrow">›</span>
+</a><a href="souvenir.html">
+🎁 名產
+<span class="arrow">›</span>
+</a><a href="tips.html">
+⚠ 注意事項
+<span class="arrow">›</span>
+</a></div><div class="card">
+<h3>離線模式</h3><p>
+本 App 已加入離線快取：首次開啟後，常用頁面可在無網路時瀏覽。
+</p><div class="small">
+導航與外部連結仍需要網路。
+</div></div></div><script>
+if ("serviceWorker" in navigator) {
+navigator.serviceWorker.register("./sw.js").catch(console.error);
+}
+</script></body>
 </html>
