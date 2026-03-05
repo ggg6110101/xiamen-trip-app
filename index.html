@@ -1,138 +1,77 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE html><html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小黑的愛心之廈門自由行助手</title>
 <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header>❤️ 小黑的愛心之廈門自由行助手</header>
-
-<div class="container">
-
-<div class="card">
-
-<h2>行程摘要</h2>
-
-<ul class="list summary" id="itinerarySummary">
-</ul>
-
-</div>
-
-
-<div class="card">
-
-<h2>功能</h2>
-
-<div class="app-grid">
-
-<a href="itinerary.html">
+</head><body><header>❤️ 小黑的愛心之廈門自由行助手</header><div class="container"><div class="card">
+<h2>行程摘要</h2><div id="itinerarySummary"></div></div><div class="card"><h2>功能</h2><div class="app-grid"><a href="itinerary.html">
 <div class="app-icon">📅</div>
 <div class="app-label">行程</div>
-</a>
-
-<a href="food.html">
+</a><a href="food.html">
 <div class="app-icon">🍜</div>
 <div class="app-label">美食</div>
-</a>
-
-<a href="hotel.html">
+</a><a href="hotel.html">
 <div class="app-icon">🏨</div>
 <div class="app-label">飯店</div>
-</a>
-
-<a href="transport.html">
+</a><a href="transport.html">
 <div class="app-icon">🚇</div>
 <div class="app-label">交通</div>
-</a>
-
-<a href="taxi.html">
+</a><a href="taxi.html">
 <div class="app-icon">🚕</div>
 <div class="app-label">叫車</div>
-</a>
-
-<a href="souvenir.html">
+</a><a href="souvenir.html">
 <div class="app-icon">🎁</div>
 <div class="app-label">名產</div>
-</a>
-
-<a href="medical.html">
+</a><a href="medical.html">
 <div class="app-icon">🏥</div>
 <div class="app-label">醫療</div>
-</a>
-
-<a href="tips.html">
+</a><a href="tips.html">
 <div class="app-icon">⚠</div>
 <div class="app-label">注意</div>
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<nav class="tabbar">
-<div class="tabs">
-
-<a class="active" href="index.html">
+</a></div></div></div><nav class="tabbar">
+<div class="tabs"><a class="active" href="index.html">
 <div class="icon">🏠</div>
 <div class="label">首頁</div>
-</a>
-
-<a href="itinerary.html">
+</a><a href="itinerary.html">
 <div class="icon">📅</div>
 <div class="label">行程</div>
-</a>
-
-<a href="transport.html">
+</a><a href="transport.html">
 <div class="icon">🚇</div>
 <div class="label">交通</div>
-</a>
-
-<a href="medical.html">
+</a><a href="medical.html">
 <div class="icon">🏥</div>
 <div class="label">醫療</div>
-</a>
-
-</div>
-</nav>
-
-
-
-<script>
+</a></div>
+</nav><script>
 
 function renderSummary(){
 
-const summary=document.getElementById("itinerarySummary")
+const container=document.getElementById("itinerarySummary")
 
 const itinerary=JSON.parse(localStorage.getItem("itineraryData")||"{}")
 
-summary.innerHTML=""
+container.innerHTML=""
 
 Object.keys(itinerary).forEach(day=>{
 
 const spots=itinerary[day]
 
-const li=document.createElement("li")
+const card=document.createElement("div")
 
-let html=`<div>
-<div class="item-title">${day}</div>`
+card.className="day-card"
+
+let html=`<div class="day-title">${day}</div>`
 
 spots.forEach(spot=>{
-html+=`<div class="item-sub">📍 ${spot.name}</div>`
+
+html+=`<div class="day-spot">📍 ${spot.name}</div>`
+
 })
 
-html+=`</div>`
+card.innerHTML=html
 
-li.innerHTML=html
-
-summary.appendChild(li)
+container.appendChild(card)
 
 })
 
@@ -140,7 +79,5 @@ summary.appendChild(li)
 
 renderSummary()
 
-</script>
-
-</body>
+</script></body>
 </html>
