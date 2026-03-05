@@ -5,18 +5,30 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>廈門景點地圖</title>
+<title>廈門景點</title>
 
 <style>
 
-#map{
-width:100%;
-height:100vh;
+body{
+font-family:-apple-system;
+background:#f2f2f7;
+padding:20px;
 }
 
-body{
-margin:0;
-font-family:-apple-system;
+.card{
+background:white;
+padding:16px;
+margin-bottom:12px;
+border-radius:12px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+button{
+background:#007aff;
+color:white;
+border:none;
+padding:10px;
+border-radius:8px;
 }
 
 </style>
@@ -25,47 +37,44 @@ font-family:-apple-system;
 
 <body>
 
-<div id="map"></div>
+<h2>🗺 廈門景點</h2>
 
-<script src="https://webapi.amap.com/maps?v=2.0&key=你的key"></script>
+<div class="card">
+中山路步行街
+<br><br>
+<button onclick="nav()">導航</button>
+</div>
+
+<div class="card">
+沙坡尾
+<br><br>
+<button onclick="nav()">導航</button>
+</div>
+
+<div class="card">
+南普陀寺
+<br><br>
+<button onclick="nav()">導航</button>
+</div>
+
+<div class="card">
+曾厝垵
+<br><br>
+<button onclick="nav()">導航</button>
+</div>
+
+<br>
+
+<a href="index.html">← 回首頁</a>
 
 <script>
 
-var map = new AMap.Map('map',{
-zoom:12,
-center:[118.0894,24.4798]
-});
-
-var spots = [
-
-{name:"中山路步行街",pos:[118.0894,24.457]},
-
-{name:"沙坡尾",pos:[118.095,24.441]},
-
-{name:"南普陀寺",pos:[118.097,24.444]},
-
-{name:"曾厝垵",pos:[118.127,24.425]}
-
-];
-
-spots.forEach(function(s){
-
-var marker = new AMap.Marker({
-position:s.pos,
-title:s.name
-});
-
-marker.on("click",function(){
-
+function nav(){
 window.open("https://uri.amap.com/navigation")
-
-});
-
-map.add(marker);
-
-});
+}
 
 </script>
 
 </body>
+
 </html>
