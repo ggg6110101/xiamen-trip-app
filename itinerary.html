@@ -5,11 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>行程｜小黑的愛心之廈門自由行助手</title>
 
-<!-- 建議加版本參數避免快取 -->
 <link rel="stylesheet" href="style.css?v=20260305" />
 
 <style>
-/* ===== 行程頁：可拖曳排序（手機友善） ===== */
 .day-wrap{ margin-bottom:14px; }
 
 .day-card{
@@ -19,7 +17,6 @@
   box-shadow:0 2px 8px rgba(0,0,0,0.05);
   transition: transform .06s ease, outline .06s ease, background .06s ease;
 }
-
 .day-card.drag-target{
   outline:2px dashed rgba(0,122,255,0.45);
   background:rgba(0,122,255,0.05);
@@ -75,7 +72,7 @@
   justify-content:center;
   font-weight:900;
   user-select:none;
-  touch-action:none; /* pointer drag 更穩 */
+  touch-action:none;
 }
 
 .spot-main{ flex:1; min-width:0; }
@@ -123,19 +120,9 @@
   background:rgba(185,28,28,0.06);
 }
 
-.empty-note{
-  margin-top:10px;
-  color:#64748b;
-  font-size:12px;
-}
+.empty-note{ margin-top:10px; color:#64748b; font-size:12px; }
+.drop-hint{ margin-top:10px; color:#64748b; font-size:12px; }
 
-.drop-hint{
-  margin-top:10px;
-  color:#64748b;
-  font-size:12px;
-}
-
-/* 拖曳 placeholder */
 .placeholder{
   height:54px;
   border-radius:14px;
@@ -144,7 +131,6 @@
   margin-top:10px;
 }
 
-/* 拖曳中的浮動卡片 */
 .drag-ghost{
   position:fixed;
   z-index:9999;
@@ -155,7 +141,7 @@
   opacity:0.98;
 }
 
-/* ===== Tab Bar 備援（避免快取造成跑版） ===== */
+/* Tab Bar 備援 */
 body{ padding-bottom:92px; }
 .tabbar{
   position:fixed; left:0; right:0; bottom:0;
@@ -190,7 +176,6 @@ body{ padding-bottom:92px; }
 <header>📅 行程（可拖曳排序）</header>
 
 <div class="container">
-
   <div class="card">
     <h2>使用方式</h2>
     <p class="small">
@@ -206,10 +191,8 @@ body{ padding-bottom:92px; }
     <a class="btn secondary" href="index.html">← 回首頁</a>
     <span class="small">已自動儲存</span>
   </div>
-
 </div>
 
-<!-- Tab Bar -->
 <nav class="tabbar">
   <div class="tabs">
     <a href="index.html"><div class="icon">🏠</div><div class="label">首頁</div></a>
@@ -223,6 +206,12 @@ body{ padding-bottom:92px; }
 (() => {
   const KEY_V2 = "xiamen_itinerary_v2";
   const KEY_OLD_CUSTOM = "xiamen_custom_spots_v1";
+  const CHANNEL_NAME = "xiamen-trip-app";
+  const bc = ("BroadcastChannel" in window) ? new BroadcastChannel(CHANNEL_NAME) : null;
+
+  function notifyUpdated(){
+    try { bc && bc.postMessage({ type:"itinerary-updated", at: Date.now() }); } catch {}
+  }
 
   const dayMeta = [
     { day: 1, title: "Day 1：抵達廈門與中山路之夜", sub: "中山路／八市／演武大橋夜景" },
@@ -259,9 +248,7 @@ body{ padding-bottom:92px; }
     ],
   };
 
-  function uid() {
-    return "id_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
-  }
+  function uid() { return "id_" + Math.random().toString(16).slice(2) + Date.now().toString(16); }
 
   function amapUrl(keyword, city) {
     const q = encodeURIComponent(keyword || "");
@@ -276,6 +263,7 @@ body{ padding-bottom:92px; }
 
   function saveV2(data) {
     localStorage.setItem(KEY_V2, JSON.stringify(data));
+    notifyUpdated(); // ✅ 每次儲存都通知首頁同步
   }
 
   function loadOldCustom() {
@@ -283,33 +271,30 @@ body{ padding-bottom:92px; }
     catch { return {}; }
   }
 
-  // 初始化：寫入 base + 併入舊 custom（若存在）
   function ensureInit() {
     const existing = loadV2();
     if (existing && typeof existing === "object") return existing;
 
     const data = {};
-    for (const d of dayMeta) {
-      const list = (baseInit[d.day] || []).map(x => ({ id: uid(), ...x }));
-      data[d.day] = list;
-    }
+    for (const d of dayMeta) data[d.day] = (baseInit[d.day] || []).map(x => ({ id: uid(), ...x }));
 
     const old = loadOldCustom();
     for (let day = 1; day <= 4; day++) {
       const arr = Array.isArray(old[day]) ? old[day] : [];
       arr.forEach(x => {
         if (!x || !x.name) return;
-        data[day].push({
-          id: uid(),
-          name: String(x.name),
-          note: x.note ? String(x.note) : "你新增的景點",
-          city: x.city ? String(x.city) : "厦门",
-        });
+        data[day].push({ id: uid(), name:String(x.name), note:x.note?String(x.note):"你新增的景點", city:x.city?String(x.city):"厦门" });
       });
     }
 
     saveV2(data);
     return data;
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#39;");
   }
 
   function render() {
@@ -323,7 +308,7 @@ body{ padding-bottom:92px; }
 
       const card = document.createElement("div");
       card.className = "day-card";
-      card.dataset.dropDay = String(meta.day); // ✅ 讓「拖到 Day 標題區」也能判斷目標天
+      card.dataset.dropDay = String(meta.day);
 
       const head = document.createElement("div");
       head.className = "day-head";
@@ -350,14 +335,13 @@ body{ padding-bottom:92px; }
       ul.dataset.day = String(meta.day);
 
       const list = Array.isArray(data[meta.day]) ? data[meta.day] : [];
-      if (list.length === 0) {
+      if (!list.length) {
         ul.innerHTML = `<div class="empty-note">尚無景點</div>`;
       } else {
         list.forEach(item => {
           const li = document.createElement("li");
           li.className = "spot-item";
           li.dataset.id = item.id;
-
           li.innerHTML = `
             <div class="handle" title="長按拖曳">☰</div>
             <div class="spot-main">
@@ -383,22 +367,12 @@ body{ padding-bottom:92px; }
     bindDragAndDrop();
   }
 
-  function escapeHtml(s) {
-    return String(s)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#39;");
-  }
-
   function bindButtons() {
     document.querySelectorAll("[data-add]").forEach(btn => {
       btn.onclick = () => {
         const day = Number(btn.dataset.add);
         const name = prompt("新增景點名稱：");
         if (!name) return;
-
         const note = prompt("簡介（可空白）：") || "";
         const city = prompt("城市（預設：厦门，可填 金门）：", "厦门") || "厦门";
 
@@ -413,9 +387,7 @@ body{ padding-bottom:92px; }
     document.querySelectorAll("[data-reset]").forEach(btn => {
       btn.onclick = () => {
         const day = Number(btn.dataset.reset);
-        const ok = confirm("要重設此天為預設行程嗎？（會清掉你在這一天新增/調整的順序）");
-        if (!ok) return;
-
+        if (!confirm("要重設此天為預設行程嗎？（會清掉你在這一天新增/調整的順序）")) return;
         const data = ensureInit();
         data[day] = (baseInit[day] || []).map(x => ({ id: uid(), ...x }));
         saveV2(data);
@@ -426,21 +398,18 @@ body{ padding-bottom:92px; }
     document.querySelectorAll("[data-del]").forEach(btn => {
       btn.onclick = () => {
         const id = btn.dataset.del;
-        const ok = confirm("刪除此景點？");
-        if (!ok) return;
+        if (!confirm("刪除此景點？")) return;
 
         const data = ensureInit();
-        for (let day = 1; day <= 4; day++) {
-          data[day] = (data[day] || []).filter(x => x.id !== id);
-        }
+        for (let day = 1; day <= 4; day++) data[day] = (data[day] || []).filter(x => x.id !== id);
         saveV2(data);
         render();
       };
     });
   }
 
-  // ===== 拖曳排序（Pointer Events, 手機可用） =====
-  let dragging = null; // {id, fromDay, li, ghost, placeholder, overUl, overDay}
+  // ===== 拖曳排序（長按0.25秒 + Day高亮 + 標題可放） =====
+  let dragging = null;
   let pressTimer = null;
   let pressStart = null;
 
@@ -460,7 +429,6 @@ body{ padding-bottom:92px; }
         const id = li.dataset.id;
         const fromDay = Number(ul.dataset.day);
 
-        // ✅ 長按 0.25 秒才開始拖曳
         pressStart = { x: e.clientX, y: e.clientY };
         pressTimer = setTimeout(() => {
           pressTimer = null;
@@ -468,16 +436,12 @@ body{ padding-bottom:92px; }
         }, 250);
 
         const cancelPress = () => {
-          if (pressTimer) {
-            clearTimeout(pressTimer);
-            pressTimer = null;
-          }
+          if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
           window.removeEventListener("pointerup", cancelPress);
           window.removeEventListener("pointermove", cancelOnMove);
         };
 
         const cancelOnMove = (ev) => {
-          // 手指有移動就取消「長按啟動」（避免滑動頁面誤觸）
           if (!pressStart) return;
           const dx = Math.abs(ev.clientX - pressStart.x);
           const dy = Math.abs(ev.clientY - pressStart.y);
@@ -494,7 +458,6 @@ body{ padding-bottom:92px; }
     clearTargets();
 
     const rect = ctx.li.getBoundingClientRect();
-
     const ghost = ctx.li.cloneNode(true);
     ghost.classList.add("drag-ghost");
     ghost.style.width = rect.width + "px";
@@ -504,19 +467,9 @@ body{ padding-bottom:92px; }
 
     ctx.li.parentNode.insertBefore(placeholder, ctx.li.nextSibling);
     ctx.li.style.display = "none";
-
     document.body.appendChild(ghost);
 
-    dragging = {
-      id: ctx.id,
-      fromDay: ctx.fromDay,
-      li: ctx.li,
-      ghost,
-      placeholder,
-      overDay: ctx.fromDay,
-      overUl: ctx.ul,
-    };
-
+    dragging = { id: ctx.id, fromDay: ctx.fromDay, li: ctx.li, ghost, placeholder, overUl: ctx.ul, overDay: ctx.fromDay };
     moveGhost(e.clientX, e.clientY);
 
     window.addEventListener("pointermove", onMove, { passive:false });
@@ -533,7 +486,6 @@ body{ padding-bottom:92px; }
     const el = document.elementFromPoint(x, y);
     if (!el) return null;
 
-    // ✅ 3) 拖到 Day 標題區也能移動：找最近的 day-card[data-drop-day]
     const dayCard = el.closest(".day-card[data-drop-day]");
     if (dayCard) {
       const day = Number(dayCard.dataset.dropDay);
@@ -541,7 +493,6 @@ body{ padding-bottom:92px; }
       return { dayCard, day, ul };
     }
 
-    // fallback：若落在 sortable 內
     const ul = el.closest(".sortable");
     if (ul) {
       const day = Number(ul.dataset.day);
@@ -563,11 +514,9 @@ body{ padding-bottom:92px; }
     dragging.overDay = t.day;
     dragging.overUl = t.ul;
 
-    // ✅ 2) 拖到其他 Day 卡片自動高亮
     clearTargets();
     if (t.dayCard) t.dayCard.classList.add("drag-target");
 
-    // 插入 placeholder（依最靠近的 spot-item）
     const items = [...t.ul.querySelectorAll(".spot-item")].filter(x => x.style.display !== "none");
     let inserted = false;
 
@@ -585,47 +534,35 @@ body{ padding-bottom:92px; }
 
   function onUp() {
     if (!dragging) return;
-
     window.removeEventListener("pointermove", onMove);
     clearTargets();
 
     const targetUl = dragging.overUl || dragging.placeholder.closest(".sortable");
     const toDay = Number(targetUl.dataset.day);
 
-    // 視覺：把原 li 放到 placeholder 位置
     dragging.li.style.display = "";
     targetUl.insertBefore(dragging.li, dragging.placeholder);
 
-    // 清理
     dragging.ghost.remove();
     dragging.placeholder.remove();
 
-    // 更新資料
     const data = ensureInit();
     const fromDay = dragging.fromDay;
 
-    // 抽出 moved
     let moved = null;
     for (let d = 1; d <= 4; d++) {
       const idx = (data[d] || []).findIndex(x => x.id === dragging.id);
-      if (idx >= 0) {
-        moved = data[d][idx];
-        data[d].splice(idx, 1);
-        break;
-      }
+      if (idx >= 0) { moved = data[d][idx]; data[d].splice(idx, 1); break; }
     }
     if (!moved) { dragging = null; render(); return; }
 
-    // 依 targetUl 的 li 順序重建 toDay
     const idsInTo = [...targetUl.querySelectorAll(".spot-item")].map(li => li.dataset.id);
 
     const oldTo = data[toDay] || [];
     if (!oldTo.find(x => x.id === moved.id)) oldTo.push(moved);
     data[toDay] = oldTo;
-
     data[toDay] = idsInTo.map(id => data[toDay].find(x => x.id === id)).filter(Boolean);
 
-    // fromDay 若跨天也重排
     const fromUl = document.querySelector(`.sortable[data-day="${fromDay}"]`);
     if (fromUl && fromDay !== toDay) {
       const idsInFrom = [...fromUl.querySelectorAll(".spot-item")].map(li => li.dataset.id);
