@@ -3,66 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>行程｜廈門自由行助手</title>
+  <title>行程表｜廈門自由行助手</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-<header>📅 行程</header>
+<header>🗓️ 4 天游程（可展開/收合）</header>
 
 <div class="container">
 
   <div class="card">
-    <h2>廈門 4 天行程</h2>
-    <ul class="list">
-      <li>
-        <div>
-          <div class="item-title">Day 1</div>
-          <div class="item-sub">中山路步行街、沙坡尾</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=中山路步行街&city=厦门&view=map&src=xiamen-trip-app">中山路</a>
-          <a class="btn" href="https://uri.amap.com/search?keyword=沙坡尾&city=厦门&view=map&src=xiamen-trip-app">沙坡尾</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 2</div>
-          <div class="item-sub">鼓浪嶼（建議穿好走的鞋）</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=鼓浪屿&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 3</div>
-          <div class="item-sub">南普陀寺、廈門大學、胡里山炮台</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=南普陀寺&city=厦门&view=map&src=xiamen-trip-app">南普陀</a>
-          <a class="btn" href="https://uri.amap.com/search?keyword=厦门大学&city=厦门&view=map&src=xiamen-trip-app">廈大</a>
-          <a class="btn" href="https://uri.amap.com/search?keyword=胡里山炮台&city=厦门&view=map&src=xiamen-trip-app">胡里山</a>
-        </div>
-      </li>
-
-      <li>
-        <div>
-          <div class="item-title">Day 4</div>
-          <div class="item-sub">曾厝垵、周邊拍照散步</div>
-        </div>
-        <div class="actions">
-          <a class="btn" href="https://uri.amap.com/search?keyword=曾厝垵&city=厦门&view=map&src=xiamen-trip-app">導航</a>
-        </div>
-      </li>
-    </ul>
+    <h2>使用方式</h2>
+    <p class="small">每一天都是一張卡片：收合看「精簡版」，展開看「時間＋簡介」。</p>
   </div>
+
+  <!-- Day 1 -->
+  <details class="hotel" open>
+    <summary>
+      <div class="hotel-title">
+        <div class="hotel-top">Day 1</div>
+        <div class="hotel-name">抵達廈門與中山路之夜</div>
+        <div class="hotel-sub">飛金門 → 水頭碼頭 → 五通碼頭 → 入住 → 八市/中山路 → 演武大橋夜景</div>
+      </div>
+      <div class="chev">›</div>
+    </summary>
+
+    <div class="hotel-body">
+      <p><b>10:35 - 11:35</b> 高雄小港機場 → 金門機場</p>
+      <p><b>12:00 - 13:00</b> 計程車前往水頭碼頭（約 15 分）→ 現場購買/兌換小三通船票</p>
+      <p><b>13:30 - 14:00</b> 搭船前往廈門五通碼頭（航程約 30 分）</p>
+      <p><b>15:00</b> 抵達飯店辦理入住</p>
+      <p><b>傍晚</b> 中山路步行街、<b>八市（第八市場）</b> 尋找在地小吃</p>
+      <p><b>晚上</b> 演武大橋觀景平台看夕陽與雙子塔夜景</p>
+
+      <div class="small" style="margin-top:10px;"><b>建議：</b>八市與中山路都好買伴手禮，想帶回台灣的食品類可留到 Day 4 再補。</div>
+    </div>
+  </details>
+
+  <!-- Day 2 -->
+  <details class="hotel">
+    <summary>
+      <div class="hotel-title">
+        <div class="hotel-top">Day 2</div>
+        <div class="hotel-name">鼓浪嶼與高空全景</div>
+        <div class="hotel-sub">鼓浪嶼（早起）→ 鐘鼓索道俯瞰 → 沙坡尾咖啡港灣</div>
+      </div>
+      <div class="chev">›</div>
+    </summary>
+
+    <div class="hotel-body">
+      <p><b>上午</b> 鼓浪嶼（需提前預約船票，建議早起出發）</p>
+      <p><b>下午</b> 返回市區 → 鐘鼓索道（俯瞰鼓浪嶼與海景）</p>
+      <p><b>晚上</b> 沙坡尾（享受咖啡店與港灣氛圍）</p>
+
+      <div class="small" style="margin-top:10px;"><b>建議：</b>鼓浪嶼人多時，早出發＋先安排想去的點（拍照/小店/散步路線）會順很多。</div>
+    </div>
+  </details>
+
+  <!-- Day 3 -->
+  <details class="hotel">
+    <summary>
+      <div class="hotel-title">
+        <div class="hotel-top">Day 3</div>
+        <div class="hotel-name">學術氣息與網紅植物園</div>
+        <div class="hotel-sub">南普陀寺 → 廈大（預約）→ 植物園雨林噴霧/多肉 → 環島路 → 曾厝垵</div>
+      </div>
+      <div class="chev">›</div>
+    </summary>
+
+    <div class="hotel-body">
+      <p><b>上午</b> 南普陀寺 → 廈門大學（需預約；看上弦場、芙蓉隧道）</p>
+      <p><b>下午</b> 廈門植物園（必拍雨林噴霧與多肉植物區）</p>
+      <p><b>傍晚</b> 環島路騎行 → 曾厝垵晚餐</p>
+
+      <div class="small" style="margin-top:10px;"><b>建議：</b>植物園拍照點很吃時間，想拍「雨林噴霧」可抓一段充裕時間慢慢走。</div>
+    </div>
+  </details>
+
+  <!-- Day 4 -->
+  <details class="hotel">
+    <summary>
+      <div class="hotel-title">
+        <div class="hotel-top">Day 4</div>
+        <div class="hotel-name">最後巡禮與返程回高</div>
+        <div class="hotel-sub">貓街/鐵路文化公園 → 五通碼頭 → 水頭碼頭 → 金門市區午餐 → 金門機場 → 高雄</div>
+      </div>
+      <div class="chev">›</div>
+    </summary>
+
+    <div class="hotel-body">
+      <p><b>上午</b> 頂澳仔貓街 或 鐵路文化公園 散步</p>
+      <p><b>10:30 - 11:00</b> 從飯店出發前往廈門五通碼頭</p>
+      <p><b>11:30 - 12:00</b> 搭船返回金門水頭碼頭</p>
+      <p><b>12:30 - 14:00</b> 金門市區簡單午餐（廣東粥/蚵嗲）→ 前往金門機場辦理登機</p>
+      <p><b>15:10 - 16:10</b> 金門機場 → 返回高雄</p>
+
+      <div class="small" style="margin-top:10px;"><b>建議：</b>有保存期限的伴手禮（素餅/餡餅）建議這天早上或前一晚再買最保險。</div>
+    </div>
+  </details>
 
   <div class="footer-nav">
     <a class="btn secondary" href="index.html">← 回首頁</a>
-    <span class="small">可離線瀏覽</span>
+    <span class="small">收合＝精簡｜展開＝時間＋簡介</span>
   </div>
 
 </div>
