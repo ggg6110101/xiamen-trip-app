@@ -391,3 +391,7 @@ text-align:center;
 grid-template-columns:repeat(4,1fr);
 }
 }
+
+.summary .list li{
+padding:10px 12px;
+}
