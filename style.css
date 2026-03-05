@@ -317,3 +317,8 @@ cursor:pointer;
 }
 
 .spot-delete:active{ transform: translateY(1px); }
+
+.spot-title, .spot-sub{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
