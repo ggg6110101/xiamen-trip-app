@@ -8,7 +8,6 @@ const PRECACHE = [
   "./style.css",
   "./manifest.json",
   "./itinerary.html",
-  "./map.html",
   "./food.html",
   "./hotel.html",
   "./taxi.html",
