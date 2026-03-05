@@ -322,3 +322,31 @@ cursor:pointer;
   overflow-wrap:anywhere;
   word-break:break-word;
 }
+
+/* 手機小螢幕優化 */
+@media (max-width:520px){
+
+  .list li{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+
+  .list li .actions,
+  .list li .btn{
+    width:100%;
+  }
+
+  .list li .btn{
+    text-align:center;
+  }
+
+}
+
+.item-title,
+.item-sub,
+.spot-title,
+.spot-sub{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
