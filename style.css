@@ -395,3 +395,25 @@ grid-template-columns:repeat(4,1fr);
 .summary .list li{
 padding:10px 12px;
 }
+
+/* 首頁行程卡片 */
+
+.day-card{
+background:white;
+border-radius:16px;
+padding:14px;
+margin-top:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.day-title{
+font-weight:800;
+font-size:16px;
+margin-bottom:6px;
+}
+
+.day-spot{
+font-size:14px;
+margin-top:4px;
+color:#444;
+}
