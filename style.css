@@ -7,6 +7,14 @@
   --border:rgba(15,23,42,0.08);
   --shadow:0 6px 18px rgba(0,0,0,.08);
   --radius:16px;
+
+  /* iOS */
+  --ios-radius: 20px;
+  --ios-radius-sm: 14px;
+  --ios-shadow: 0 14px 30px rgba(0,0,0,.08);
+  --ios-shadow-sm: 0 8px 18px rgba(0,0,0,.07);
+  --ios-border: 1px solid rgba(15,23,42,.08);
+  --ios-sep: 1px solid rgba(15,23,42,.07);
 }
 
 *{box-sizing:border-box}
@@ -23,13 +31,14 @@ header{
   padding:16px 14px;
   text-align:center;
   font-size:20px;
-  font-weight:700;
+  font-weight:800;
   position:sticky;
   top:0;
   z-index:10;
 }
 
-.container{padding:14px; max-width:860px; margin:0 auto;}
+.container{padding:14px; max-width:860px; margin:0 auto; padding-bottom:26px;}
+
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -40,25 +49,7 @@ header{
 }
 
 h2,h3{margin:0 0 10px 0}
-p{margin:8px 0;color:var(--muted);line-height:1.5}
-
-.list{
-  margin:0;
-  padding:0;
-  list-style:none;
-}
-.list li{
-  padding:12px 0;
-  border-bottom:1px solid rgba(15,23,42,0.06);
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  justify-content:space-between;
-}
-.list li:last-child{border-bottom:none}
-
-.item-title{font-weight:650}
-.item-sub{font-size:13px;color:var(--muted);margin-top:4px}
+p{margin:8px 0;color:var(--muted);line-height:1.55}
 
 .actions{display:flex; gap:8px; flex-wrap:wrap}
 .btn{
@@ -66,10 +57,10 @@ p{margin:8px 0;color:var(--muted);line-height:1.5}
   padding:10px 12px;
   border-radius:12px;
   text-decoration:none;
-  border:1px solid rgba(255,255,255,0.0);
+  border:1px solid rgba(255,255,255,0);
   background:var(--brand);
   color:#fff;
-  font-weight:650;
+  font-weight:700;
   line-height:1;
 }
 .btn.secondary{
@@ -86,10 +77,7 @@ p{margin:8px 0;color:var(--muted);line-height:1.5}
   align-items:center;
   margin-top:12px;
 }
-.small{
-  font-size:12px;
-  color:var(--muted);
-}
+.small{font-size:12px; color:var(--muted); opacity:.9;}
 
 .menu a{
   display:flex;
@@ -103,7 +91,7 @@ p{margin:8px 0;color:var(--muted);line-height:1.5}
 .menu a:last-child{border-bottom:none}
 .menu a .arrow{color:var(--muted)}
 
-/* --- Expand / Collapse (details/summary) --- */
+/* ========= details/summary (expand/collapse) ========= */
 details.hotel{
   border:1px solid rgba(15,23,42,0.08);
   border-radius:var(--radius);
@@ -119,66 +107,50 @@ details.hotel > summary{
   padding:16px;
   user-select:none;
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:space-between;
   gap:12px;
 }
 
+/* ✅ 把左邊那個三角形 marker 乾掉（你截圖的那個） */
 details.hotel > summary::-webkit-details-marker{ display:none; }
+details.hotel > summary::marker{ content:""; }
 
-.hotel-title{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.hotel-top{
-  font-weight:800;
-  color:var(--brand);
-}
-
-.hotel-name{
-  font-size:18px;
-  font-weight:750;
-}
-
-.hotel-sub{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.45;
-}
+.hotel-title{display:flex; flex-direction:column; gap:6px;}
+.hotel-top{font-weight:900; color:var(--brand);}
+.hotel-name{font-size:18px; font-weight:850; line-height:1.25;}
+.hotel-sub{color:var(--muted); font-size:13px; line-height:1.45;}
 
 .chev{
   flex:0 0 auto;
-  color:var(--muted);
+  width:34px;height:34px;
+  border-radius:999px;
+  display:grid;place-items:center;
+  border:1px solid rgba(15,23,42,.08);
+  background:rgba(255,255,255,.75);
+  box-shadow:0 8px 18px rgba(0,0,0,.07);
   font-size:18px;
-  line-height:1;
-  margin-top:2px;
+  color:var(--muted);
   transform:rotate(0deg);
   transition:transform .15s ease;
 }
-
 details.hotel[open] .chev{ transform:rotate(90deg); }
 
 .hotel-body{
   padding:0 16px 16px 16px;
   border-top:1px solid rgba(15,23,42,0.06);
 }
-
 .hotel-body p{ margin:10px 0; color:var(--text); }
 .hotel-body .small{ color:var(--muted); }
 
-/* --- Spot mini cards (for itinerary) --- */
+/* ========= Spot mini cards ========= */
 .spot-grid{
   display:grid;
   grid-template-columns:repeat(2, minmax(0, 1fr));
-  gap:10px;
+  gap:12px;
   margin-top:12px;
 }
-
-@media (max-width:420px){
-  .spot-grid{ grid-template-columns:1fr; }
-}
+@media (max-width:420px){ .spot-grid{ grid-template-columns:1fr; } }
 
 .spot-card{
   display:block;
@@ -190,56 +162,19 @@ details.hotel[open] .chev{ transform:rotate(90deg); }
   box-shadow:var(--shadow);
   padding:12px;
 }
+.spot-title{font-weight:900; margin:0 0 6px 0;}
+.spot-sub{margin:0; color:var(--muted); font-size:13px; line-height:1.45;}
+.spot-tag{display:inline-block; margin-top:10px; font-size:12px; color:var(--brand); font-weight:800;}
 
-.spot-card:hover{ transform:translateY(-1px); }
-
-.spot-title{
-  font-weight:800;
-  margin:0 0 6px 0;
-}
-
-.spot-sub{
-  margin:0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.45;
-}
-
-.spot-tag{
-  display:inline-block;
-  margin-top:10px;
-  font-size:12px;
-  color:var(--brand);
-  font-weight:700;
-}
-
-/* =========================
-   iOS App Card Style (V1)
-   貼在 style.css 最底部用來覆蓋
-   ========================= */
-
-:root{
-  --ios-radius: 20px;
-  --ios-radius-sm: 14px;
-  --ios-shadow: 0 14px 30px rgba(0,0,0,.08);
-  --ios-shadow-sm: 0 8px 18px rgba(0,0,0,.07);
-  --ios-border: 1px solid rgba(15,23,42,.08);
-  --ios-sep: 1px solid rgba(15,23,42,.07);
-}
-
-/* 讓整體像 iOS 的留白與字體節奏 */
-.container{ padding-bottom: 26px; }
+/* ========= iPhone App look (override) ========= */
 header{
-  position: sticky;
-  top: 0;
-  z-index: 10;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   background: rgba(255,255,255,.72);
+  color: var(--text);
   border-bottom: 1px solid rgba(15,23,42,.06);
 }
 
-/* 通用卡片：像 iOS 的 group card */
 .card{
   border: var(--ios-border) !important;
   border-radius: var(--ios-radius) !important;
@@ -247,34 +182,20 @@ header{
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: var(--ios-shadow) !important;
-  padding: 16px !important;
 }
 
-/* 文字層級更像 App */
-.card h2{ margin:0 0 10px 0; font-size: 18px; letter-spacing: .2px; }
-.small{ opacity: .85; }
-
-/* iOS 風格按鈕（像 pill） */
-.actions{ gap:10px !important; }
 .btn{
   border-radius: 999px !important;
   padding: 10px 14px !important;
-  font-weight: 750 !important;
-  letter-spacing: .2px;
+  font-weight: 800 !important;
   border: 1px solid rgba(15,23,42,.10) !important;
   box-shadow: 0 6px 16px rgba(0,0,0,.06);
-  transform: translateY(0);
-  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
 }
-.btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.10); }
-.btn:active{ transform: translateY(0px); filter: brightness(.98); }
-
 .btn.secondary{
   background: rgba(255,255,255,.85) !important;
   border: 1px solid rgba(15,23,42,.10) !important;
 }
 
-/* --- details/summary 變成 iOS 可點擊 cell + 展開內容 --- */
 details.hotel{
   border: var(--ios-border) !important;
   border-radius: var(--ios-radius) !important;
@@ -282,17 +203,30 @@ details.hotel{
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: var(--ios-shadow) !important;
-  overflow: hidden;
   margin: 14px 0 !important;
 }
 
-details.hotel > summary{
-  padding: 16px 16px !important;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+.hotel-top{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:.3px;
+}
+.hotel-top::before{
+  content:"TOP";
+  display:inline-block;
+  font-size:11px;
+  font-weight:900;
+  padding:4px 8px;
+  border-radius:999px;
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(59,130,246,.20);
 }
 
-details.hotel > summary:active
+.spot-card{
+  border-radius: var(--ios-radius-sm) !important;
+  background: rgba(255,255,255,.85) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--ios-shadow-sm) !important;
+}
