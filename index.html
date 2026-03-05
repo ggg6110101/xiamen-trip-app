@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小黑的愛心之廈門自由行助手</title>
 
-<link rel="stylesheet" href="style.css?v=20260305">
+<link rel="stylesheet" href="style.css?v=20260306">
 
 <style>
 /* TabBar 備援（避免快取造成跑版） */
@@ -57,6 +57,20 @@ body{ padding-bottom:92px; }
   overflow-wrap:anywhere;
   word-break:break-word;
 }
+
+/* 可選：更新提示小條（不擋畫面） */
+.update-toast{
+  position:fixed;
+  left:12px; right:12px;
+  bottom:104px;
+  z-index:1000;
+  background:rgba(15,23,42,.92);
+  color:#fff;
+  border-radius:14px;
+  padding:10px 12px;
+  font-size:12px;
+  display:none;
+}
 </style>
 </head>
 
@@ -87,6 +101,8 @@ body{ padding-bottom:92px; }
 
 </div>
 
+<div id="updateToast" class="update-toast">偵測到更新，正在套用新版…</div>
+
 <nav class="tabbar">
   <div class="tabs">
     <a class="active" href="index.html"><div class="icon">🏠</div><div class="label">首頁</div></a>
@@ -98,6 +114,7 @@ body{ padding-bottom:92px; }
 
 <script>
 (() => {
+  /* ========= 行程摘要同步 ========= */
   const KEY_V2 = "xiamen_itinerary_v2";
   const CHANNEL_NAME = "xiamen-trip-app";
 
@@ -125,7 +142,6 @@ body{ padding-bottom:92px; }
   function renderSummary() {
     const wrap = document.getElementById("itinerarySummary");
     const data = loadV2();
-
     wrap.innerHTML = "";
 
     if (!data) {
@@ -135,18 +151,14 @@ body{ padding-bottom:92px; }
 
     dayMeta.forEach(d => {
       const list = Array.isArray(data[d.day]) ? data[d.day] : [];
-
       const card = document.createElement("div");
       card.className = "day-card";
 
       let html = `<div class="day-title">${esc(d.title)}</div>`;
-
-      if (list.length === 0) {
+      if (!list.length) {
         html += `<div class="day-spot">（尚無景點）</div>`;
       } else {
-        list.forEach(item => {
-          html += `<div class="day-spot">📍 ${esc(item.name)}</div>`;
-        });
+        list.forEach(item => html += `<div class="day-spot">📍 ${esc(item.name)}</div>`);
       }
 
       card.innerHTML = html;
@@ -154,7 +166,6 @@ body{ padding-bottom:92px; }
     });
   }
 
-  // ✅ 各種「回到首頁」情境都重刷（PWA/bfcache/切換頁籤都能同步）
   document.addEventListener("DOMContentLoaded", renderSummary);
   window.addEventListener("pageshow", renderSummary);
   window.addEventListener("focus", renderSummary);
@@ -162,15 +173,76 @@ body{ padding-bottom:92px; }
     if (!document.hidden) renderSummary();
   });
 
-  // ✅ 行程頁儲存後主動通知（最穩）
   if ("BroadcastChannel" in window) {
     const bc = new BroadcastChannel(CHANNEL_NAME);
     bc.onmessage = (ev) => {
-      if (ev && ev.data && ev.data.type === "itinerary-updated") {
-        renderSummary();
-      }
+      if (ev && ev.data && ev.data.type === "itinerary-updated") renderSummary();
     };
   }
+
+  /* ========= Service Worker 自動更新（避免快取卡住） ========= */
+  const toast = document.getElementById("updateToast");
+  const showToast = (msg) => {
+    if (!toast) return;
+    toast.textContent = msg || "偵測到更新，正在套用新版…";
+    toast.style.display = "block";
+  };
+  const hideToast = () => {
+    if (!toast) return;
+    toast.style.display = "none";
+  };
+
+  // 避免同一次更新無限重整：用 sessionStorage 記一次
+  const RELOAD_GUARD_KEY = "sw_reloaded_once";
+
+  async function registerAndAutoUpdateSW() {
+    if (!("serviceWorker" in navigator)) return;
+
+    try {
+      // register
+      const reg = await navigator.serviceWorker.register("sw.js");
+
+      // 每次開啟頁面都主動檢查更新（最重要）
+      if (reg && reg.update) {
+        try { await reg.update(); } catch {}
+      }
+
+      // 偵測到新 worker
+      reg.addEventListener("updatefound", () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+
+        newWorker.addEventListener("statechange", () => {
+          // 新 SW 安裝完成（waiting）
+          if (newWorker.state === "installed") {
+            // 若已有舊 SW 在控制頁面，代表這次確實有更新
+            if (navigator.serviceWorker.controller) {
+              showToast("偵測到更新，正在套用新版…");
+              try { newWorker.postMessage("SKIP_WAITING"); } catch {}
+            }
+          }
+        });
+      });
+
+      // 一旦 controller 變更（新 SW 接管），就刷新一次拿最新資源
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        // 防止重整迴圈
+        if (sessionStorage.getItem(RELOAD_GUARD_KEY) === "1") return;
+        sessionStorage.setItem(RELOAD_GUARD_KEY, "1");
+        showToast("已套用新版，正在刷新…");
+        location.reload();
+      });
+
+      // 首次安裝（沒有 controller）也不用刷新
+      hideToast();
+
+    } catch (err) {
+      // SW 註冊失敗不影響使用
+      hideToast();
+    }
+  }
+
+  registerAndAutoUpdateSW();
 
 })();
 </script>
