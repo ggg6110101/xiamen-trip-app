@@ -294,66 +294,65 @@
   }
 
   function renderDay(day) {
-    const all = loadAll();
-    const list = all[day] || [];
-    const wrap = document.getElementById(`custom-day-${day}`);
-    if (!wrap) return;
+  const all = loadAll();
+  const list = all[day] || [];
+  const wrap = document.getElementById(`custom-day-${day}`);
+  if (!wrap) return;
 
-    wrap.innerHTML = "";
-    if (list.length === 0) {
-      wrap.innerHTML = `<div class="empty-note">尚未新增景點</div>`;
-      return;
-    }
-
-    list.forEach((item, index) => {
-  // 外層卡片（改成 div，避免刪除按鈕塞在 <a> 裡不好點）
-  const card = document.createElement("div");
-  card.className = "spot-card spot-custom";
-
-  const del = document.createElement("button");
-  del.className = "spot-delete";
-  del.type = "button";
-  del.setAttribute("aria-label", "刪除此景點");
-  del.textContent = "✕";
-
-  del.addEventListener("click", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const ok = confirm(`刪除「${item.name}」？`);
-    if (!ok) return;
-
-    const all = loadAll();
-    all[day] = all[day] || [];
-    all[day].splice(index, 1);
-    saveAll(all);
-    renderDay(day);
-  });
-
-  const title = document.createElement("div");
-  title.className = "spot-title";
-  title.textContent = item.name;
-
-  const sub = document.createElement("p");
-  sub.className = "spot-sub";
-  sub.textContent = item.note ? item.note : (item.city ? `城市：${item.city}` : "自訂景點");
-
-  const nav = document.createElement("a");
-  nav.className = "spot-tag";
-  nav.target = "_blank";
-  nav.rel = "noopener";
-  nav.href = amapUrl(item.name, item.city);
-  nav.textContent = "點我導航 →";
-
-  card.appendChild(del);
-  card.appendChild(title);
-  card.appendChild(sub);
-  card.appendChild(nav);
-
-  wrap.appendChild(card);
-});
-    });
+  wrap.innerHTML = "";
+  if (list.length === 0) {
+    wrap.innerHTML = `<div class="empty-note">尚未新增景點</div>`;
+    return;
   }
+
+  list.forEach((item, index) => {
+    // 外層卡片（用 div，避免刪除按鈕塞在 <a> 裡不好點）
+    const card = document.createElement("div");
+    card.className = "spot-card spot-custom";
+
+    const del = document.createElement("button");
+    del.className = "spot-delete";
+    del.type = "button";
+    del.setAttribute("aria-label", "刪除此景點");
+    del.textContent = "✕";
+
+    del.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const ok = confirm(`刪除「${item.name}」？`);
+      if (!ok) return;
+
+      const all2 = loadAll();
+      all2[day] = all2[day] || [];
+      all2[day].splice(index, 1);
+      saveAll(all2);
+      renderDay(day);
+    });
+
+    const title = document.createElement("div");
+    title.className = "spot-title";
+    title.textContent = item.name;
+
+    const sub = document.createElement("p");
+    sub.className = "spot-sub";
+    sub.textContent = item.note ? item.note : (item.city ? `城市：${item.city}` : "自訂景點");
+
+    const nav = document.createElement("a");
+    nav.className = "spot-tag";
+    nav.target = "_blank";
+    nav.rel = "noopener";
+    nav.href = amapUrl(item.name, item.city);
+    nav.textContent = "點我導航 →";
+
+    card.appendChild(del);
+    card.appendChild(title);
+    card.appendChild(sub);
+    card.appendChild(nav);
+
+    wrap.appendChild(card);
+  });
+}
 
   function addSpot(day) {
     const defaultCity = (day === 4) ? "金門" : "廈門";
