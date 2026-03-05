@@ -5,38 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小黑的愛心之廈門自由行助手</title>
 
-<!-- ✅ 強制繞過快取，確保拿到最新 CSS -->
 <link rel="stylesheet" href="style.css?v=20260305">
 
-<!-- ✅ TabBar 備援樣式：就算 CSS 因快取沒更新，TabBar 也不會跑版 -->
 <style>
-  body{ padding-bottom:92px; }
-  .tabbar{
-    position:fixed; left:0; right:0; bottom:0;
-    padding:10px 12px 14px;
-    background:rgba(255,255,255,.78);
-    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
-    border-top:1px solid rgba(15,23,42,.07);
-    z-index:999;
-  }
-  .tabbar .tabs{
-    max-width:860px; margin:0 auto;
-    display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
-  }
-  .tabbar a{
-    text-decoration:none;
-    color:#64748b;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:4px; padding:8px 6px; border-radius:14px;
-  }
-  .tabbar a:active{ background:rgba(0,0,0,.06); }
-  .tabbar .icon{ font-size:18px; line-height:1; }
-  .tabbar .label{ font-size:11px; font-weight:800; letter-spacing:.2px; }
-  .tabbar a.active{
-    color:#007aff;
-    background:rgba(0,122,255,.10);
-    border:1px solid rgba(0,122,255,.15);
-  }
+/* TabBar 備援（避免快取造成跑版） */
+body{ padding-bottom:92px; }
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0;
+  padding:10px 12px 14px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border-top:1px solid rgba(15,23,42,.07);
+  z-index:999;
+}
+.tabbar .tabs{
+  max-width:860px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+}
+.tabbar a{
+  text-decoration:none;
+  color:#64748b;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; padding:8px 6px; border-radius:14px;
+}
+.tabbar a:active{ background:rgba(0,0,0,.06); }
+.tabbar .icon{ font-size:18px; line-height:1; }
+.tabbar .label{ font-size:11px; font-weight:800; letter-spacing:.2px; }
+.tabbar a.active{
+  color:#007aff;
+  background:rgba(0,122,255,.10);
+  border:1px solid rgba(0,122,255,.15);
+}
+
+/* Apple 風格摘要卡片 */
+.day-card{
+  background:#fff;
+  border-radius:16px;
+  padding:14px;
+  margin-top:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.day-title{
+  font-weight:900;
+  font-size:15px;
+  line-height:1.25;
+}
+.day-spot{
+  margin-top:6px;
+  font-size:13px;
+  color:#334155;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
 </style>
 </head>
 
@@ -53,7 +73,6 @@
 
   <div class="card">
     <h2>功能</h2>
-
     <div class="app-grid">
       <a href="itinerary.html"><div class="app-icon">📅</div><div class="app-label">行程</div></a>
       <a href="food.html"><div class="app-icon">🍜</div><div class="app-label">美食</div></a>
@@ -79,57 +98,80 @@
 
 <script>
 (() => {
-  const STORAGE_KEY = "xiamen_custom_spots_v1";
+  const KEY_V2 = "xiamen_itinerary_v2";
+  const CHANNEL_NAME = "xiamen-trip-app";
 
-  // ✅ 預設行程（與 itinerary.html 一致）
-  const base = [
-    { day: "Day 1", title: "抵達廈門與中山路之夜", spots: ["中山路步行街", "八市（第八市場）", "演武大橋觀景平台", "雙子塔（世茂海峽大廈）"] },
-    { day: "Day 2", title: "鼓浪嶼與高空全景", spots: ["鼓浪嶼", "鐘鼓索道", "沙坡尾"] },
-    { day: "Day 3", title: "學術氣息與網紅植物園", spots: ["南普陀寺", "廈門大學", "廈門植物園", "環島路", "曾厝垵"] },
-    { day: "Day 4", title: "最後巡禮與返程回高", spots: ["頂澳仔貓街", "鐵路文化公園", "廈門五通碼頭", "金門水頭碼頭", "金門機場"] },
+  const dayMeta = [
+    { day: 1, title: "Day 1：抵達廈門與中山路之夜" },
+    { day: 2, title: "Day 2：鼓浪嶼與高空全景" },
+    { day: 3, title: "Day 3：學術氣息與網紅植物園" },
+    { day: 4, title: "Day 4：最後巡禮與返程" },
   ];
 
-  function loadCustom() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-    catch { return {}; }
+  function loadV2() {
+    try { return JSON.parse(localStorage.getItem(KEY_V2) || "null"); }
+    catch { return null; }
+  }
+
+  function esc(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
   }
 
   function renderSummary() {
-    const container = document.getElementById("itinerarySummary");
-    const custom = loadCustom();
+    const wrap = document.getElementById("itinerarySummary");
+    const data = loadV2();
 
-    container.innerHTML = "";
+    wrap.innerHTML = "";
 
-    base.forEach((d, idx) => {
-      const dayNum = idx + 1;
-      const extra = (custom[dayNum] || []).map(x => x && x.name ? x.name : null).filter(Boolean);
+    if (!data) {
+      wrap.innerHTML = `<div class="small">尚未建立行程資料，請先進入「行程」頁面一次。</div>`;
+      return;
+    }
+
+    dayMeta.forEach(d => {
+      const list = Array.isArray(data[d.day]) ? data[d.day] : [];
 
       const card = document.createElement("div");
       card.className = "day-card";
 
-      let html = `
-        <div class="day-title">${d.day}｜${d.title}</div>
-      `;
+      let html = `<div class="day-title">${esc(d.title)}</div>`;
 
-      // base spots
-      d.spots.forEach(name => {
-        html += `<div class="day-spot">📍 ${name}</div>`;
-      });
-
-      // custom spots
-      if (extra.length) {
-        html += `<div class="day-spot" style="margin-top:8px; font-weight:800;">你新增的景點</div>`;
-        extra.forEach(name => {
-          html += `<div class="day-spot">✨ ${name}</div>`;
+      if (list.length === 0) {
+        html += `<div class="day-spot">（尚無景點）</div>`;
+      } else {
+        list.forEach(item => {
+          html += `<div class="day-spot">📍 ${esc(item.name)}</div>`;
         });
       }
 
       card.innerHTML = html;
-      container.appendChild(card);
+      wrap.appendChild(card);
     });
   }
 
-  renderSummary();
+  // ✅ 各種「回到首頁」情境都重刷（PWA/bfcache/切換頁籤都能同步）
+  document.addEventListener("DOMContentLoaded", renderSummary);
+  window.addEventListener("pageshow", renderSummary);
+  window.addEventListener("focus", renderSummary);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) renderSummary();
+  });
+
+  // ✅ 行程頁儲存後主動通知（最穩）
+  if ("BroadcastChannel" in window) {
+    const bc = new BroadcastChannel(CHANNEL_NAME);
+    bc.onmessage = (ev) => {
+      if (ev && ev.data && ev.data.type === "itinerary-updated") {
+        renderSummary();
+      }
+    };
+  }
+
 })();
 </script>
 
