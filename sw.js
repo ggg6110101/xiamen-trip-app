@@ -14,6 +14,7 @@ const PRECACHE = [
   "./transport.html",
   "./souvenir.html",
   "./tips.html",
+  "./medical.html",
 ];
 
 self.addEventListener("install", (event) => {
