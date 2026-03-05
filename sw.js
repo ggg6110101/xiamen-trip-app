@@ -1,6 +1,6 @@
 // 簡易離線快取（App Shell）
 // ✅ v2：修正 CSS/JS 長期吃舊快取問題
-const CACHE_NAME = "xiamen-trip-app-v3";
+const CACHE_NAME = "xiamen-trip-app-v4";
 
 const PRECACHE = [
   "./",
