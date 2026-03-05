@@ -1,394 +1,643 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>行程表｜廈門自由行助手</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>行程｜小黑的愛心之廈門自由行助手</title>
+
+<!-- 建議加版本參數避免快取 -->
+<link rel="stylesheet" href="style.css?v=20260305" />
+
+<style>
+/* ===== 行程頁：可拖曳排序（手機友善） ===== */
+.day-wrap{ margin-bottom:14px; }
+
+.day-card{
+  background:#fff;
+  border-radius:16px;
+  padding:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  transition: transform .06s ease, outline .06s ease, background .06s ease;
+}
+
+.day-card.drag-target{
+  outline:2px dashed rgba(0,122,255,0.45);
+  background:rgba(0,122,255,0.05);
+}
+
+.day-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.day-title{
+  font-weight:900;
+  font-size:16px;
+  line-height:1.25;
+}
+
+.day-sub{
+  margin-top:4px;
+  color:#64748b;
+  font-size:12px;
+  line-height:1.35;
+}
+
+.day-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.sortable{
+  list-style:none;
+  padding:0;
+  margin:12px 0 0;
+}
+
+.spot-item{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(2,6,23,0.03);
+  border:1px solid rgba(15,23,42,0.07);
+  margin-top:10px;
+}
+
+.handle{
+  width:34px;
+  height:34px;
+  border-radius:12px;
+  border:1px solid rgba(15,23,42,0.10);
+  background:rgba(255,255,255,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  user-select:none;
+  touch-action:none; /* pointer drag 更穩 */
+}
+
+.spot-main{ flex:1; min-width:0; }
+
+.spot-name{
+  font-weight:900;
+  font-size:14px;
+  line-height:1.25;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.spot-note{
+  margin-top:4px;
+  font-size:12px;
+  color:#475569;
+  line-height:1.35;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.spot-tags{
+  margin-top:8px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(15,23,42,0.10);
+  background:rgba(255,255,255,0.85);
+  font-size:12px;
+  text-decoration:none;
+  color:#0f172a;
+}
+
+.tag.danger{
+  color:#b91c1c;
+  border-color:rgba(185,28,28,0.25);
+  background:rgba(185,28,28,0.06);
+}
+
+.empty-note{
+  margin-top:10px;
+  color:#64748b;
+  font-size:12px;
+}
+
+.drop-hint{
+  margin-top:10px;
+  color:#64748b;
+  font-size:12px;
+}
+
+/* 拖曳 placeholder */
+.placeholder{
+  height:54px;
+  border-radius:14px;
+  border:2px dashed rgba(0,122,255,0.35);
+  background:rgba(0,122,255,0.06);
+  margin-top:10px;
+}
+
+/* 拖曳中的浮動卡片 */
+.drag-ghost{
+  position:fixed;
+  z-index:9999;
+  pointer-events:none;
+  transform: translate(-50%, -50%);
+  width:min(520px, calc(100vw - 24px));
+  box-shadow:0 18px 44px rgba(0,0,0,0.18);
+  opacity:0.98;
+}
+
+/* ===== Tab Bar 備援（避免快取造成跑版） ===== */
+body{ padding-bottom:92px; }
+.tabbar{
+  position:fixed; left:0; right:0; bottom:0;
+  padding:10px 12px 14px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border-top:1px solid rgba(15,23,42,.07);
+  z-index:999;
+}
+.tabbar .tabs{
+  max-width:860px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+}
+.tabbar a{
+  text-decoration:none;
+  color:#64748b;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:4px; padding:8px 6px; border-radius:14px;
+}
+.tabbar a:active{ background:rgba(0,0,0,.06); }
+.tabbar .icon{ font-size:18px; line-height:1; }
+.tabbar .label{ font-size:11px; font-weight:800; letter-spacing:.2px; }
+.tabbar a.active{
+  color:#007aff;
+  background:rgba(0,122,255,.10);
+  border:1px solid rgba(0,122,255,.15);
+}
+</style>
 </head>
 
 <body>
-<header>🗓️ 4 天游程（點卡片展開/收合）</header>
+<header>📅 行程（可拖曳排序）</header>
 
 <div class="container">
 
   <div class="card">
     <h2>使用方式</h2>
-    <p class="small">收合＝精簡行程；展開＝時間＋簡介＋景點小卡。每一天底下可按「＋新增景點」加入自己的點（可導航）。</p>
+    <p class="small">
+      長按每個景點左側「☰」約 0.25 秒開始拖曳。<br>
+      可拖曳排序，也可拖到其他天（包含拖到「Day 標題區」）完成跨天移動。<br>
+      變更會自動儲存，主頁摘要會同步更新。
+    </p>
   </div>
 
-  <!-- Day 1 -->
-  <details class="hotel" open>
-    <summary>
-      <div class="hotel-title">
-        <div class="hotel-top">Day 1</div>
-        <div class="hotel-name">抵達廈門與中山路之夜</div>
-        <div class="hotel-sub">飛金門 → 水頭碼頭 → 五通碼頭 → 入住 → 中山路/八市 → 演武大橋夜景</div>
-      </div>
-      <div class="chev">›</div>
-    </summary>
-
-    <div class="hotel-body">
-      <p><b>10:35 - 11:35</b> 高雄小港機場 → 金門機場</p>
-      <p><b>12:00 - 13:00</b> 計程車前往水頭碼頭（約 15 分）→ 現場購買/兌換小三通船票</p>
-      <p><b>13:30 - 14:00</b> 搭船前往廈門五通碼頭（航程約 30 分）</p>
-      <p><b>15:00</b> 抵達飯店辦理入住</p>
-      <p><b>傍晚</b> 中山路步行街、<b>八市（第八市場）</b> 尋找在地小吃</p>
-      <p><b>晚上</b> 演武大橋觀景平台看夕陽與雙子塔夜景</p>
-
-      <div class="small" style="margin-top:10px;"><b>建議：</b>八市與中山路都很適合第一晚快速掃街；有保存期限的點心類可留到 Day 4 再補。</div>
-
-      <div class="small" style="margin-top:12px;"><b>今日景點導航</b></div>
-      <div class="spot-grid" data-base-spots="day1">
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E4%B8%AD%E5%B1%B1%E8%B7%AF%E6%AD%A5%E8%A1%8C%E8%A1%97&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">中山路步行街</div>
-          <p class="spot-sub">夜逛必去｜小吃/購物/老字號</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E7%AC%AC%E5%85%AB%E5%B8%82%E5%A0%B4&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">八市（第八市場）</div>
-          <p class="spot-sub">在地小吃集中地｜好逛好吃</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E6%BC%94%E6%AD%A6%E5%A4%A7%E6%A9%8B%20%E8%A7%80%E6%99%AF%E5%B9%B3%E5%8F%B0&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">演武大橋觀景平台</div>
-          <p class="spot-sub">夕陽＋雙子塔夜景｜拍照點</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E4%B8%96%E8%8C%82%E6%B5%B7%E5%B3%BD%E5%A4%A7%E5%8E%A6%20%E9%9B%99%E5%AD%90%E5%A1%94&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">雙子塔（世茂海峽大廈）</div>
-          <p class="spot-sub">廈門地標｜夜景視野佳</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-      </div>
-
-      <div class="small" style="margin-top:14px;"><b>你新增的景點</b></div>
-      <div class="spot-grid" id="custom-day-1"></div>
-
-      <div class="actions" style="margin-top:12px;">
-        <button class="btn" type="button" data-add-spot="1">＋新增景點</button>
-        <button class="btn secondary" type="button" data-clear-spots="1">清空本日新增</button>
-      </div>
-    </div>
-  </details>
-
-  <!-- Day 2 -->
-  <details class="hotel">
-    <summary>
-      <div class="hotel-title">
-        <div class="hotel-top">Day 2</div>
-        <div class="hotel-name">鼓浪嶼與高空全景</div>
-        <div class="hotel-sub">鼓浪嶼（早起）→ 鐘鼓索道俯瞰 → 沙坡尾咖啡港灣</div>
-      </div>
-      <div class="chev">›</div>
-    </summary>
-
-    <div class="hotel-body">
-      <p><b>上午</b> 鼓浪嶼（需提前預約船票，建議早起出發）</p>
-      <p><b>下午</b> 返回市區 → 鐘鼓索道（俯瞰鼓浪嶼與海景）</p>
-      <p><b>晚上</b> 沙坡尾（享受咖啡店與港灣氛圍）</p>
-
-      <div class="small" style="margin-top:10px;"><b>建議：</b>鼓浪嶼人多時早出發最省時間；下午索道更適合「收尾看景」的節奏。</div>
-
-      <div class="small" style="margin-top:12px;"><b>今日景點導航</b></div>
-      <div class="spot-grid" data-base-spots="day2">
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E9%BC%93%E6%B5%AA%E5%B6%BC&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">鼓浪嶼</div>
-          <p class="spot-sub">經典必去｜慢走散步｜小店/建築</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E9%90%98%E9%BC%93%E7%B4%A2%E9%81%93%20%E5%BB%88%E9%96%80&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">鐘鼓索道</div>
-          <p class="spot-sub">高空俯瞰｜海景/城市景</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E6%B2%99%E5%9D%A1%E5%B0%BE&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">沙坡尾</div>
-          <p class="spot-sub">港灣氛圍｜咖啡/小店｜夜晚散步</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-      </div>
-
-      <div class="small" style="margin-top:14px;"><b>你新增的景點</b></div>
-      <div class="spot-grid" id="custom-day-2"></div>
-
-      <div class="actions" style="margin-top:12px;">
-        <button class="btn" type="button" data-add-spot="2">＋新增景點</button>
-        <button class="btn secondary" type="button" data-clear-spots="2">清空本日新增</button>
-      </div>
-    </div>
-  </details>
-
-  <!-- Day 3 -->
-  <details class="hotel">
-    <summary>
-      <div class="hotel-title">
-        <div class="hotel-top">Day 3</div>
-        <div class="hotel-name">學術氣息與網紅植物園</div>
-        <div class="hotel-sub">南普陀寺 → 廈大（預約）→ 植物園雨林噴霧/多肉 → 環島路 → 曾厝垵</div>
-      </div>
-      <div class="chev">›</div>
-    </summary>
-
-    <div class="hotel-body">
-      <p><b>上午</b> 南普陀寺 → 廈門大學（需預約；看上弦場、芙蓉隧道）</p>
-      <p><b>下午</b> 廈門植物園（必拍雨林噴霧與多肉植物區）</p>
-      <p><b>傍晚</b> 環島路騎行 → 曾厝垵晚餐</p>
-
-      <div class="small" style="margin-top:10px;"><b>建議：</b>植物園拍照點很吃時間，建議安排更充裕的走拍時間。</div>
-
-      <div class="small" style="margin-top:12px;"><b>今日景點導航</b></div>
-      <div class="spot-grid" data-base-spots="day3">
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E5%8D%97%E6%99%AE%E9%99%80%E5%AF%BA&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">南普陀寺</div>
-          <p class="spot-sub">香火鼎盛｜早上走行程很順</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E5%BB%88%E9%96%80%E5%A4%A7%E5%AD%B8&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">廈門大學</div>
-          <p class="spot-sub">需預約｜上弦場/芙蓉隧道</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E5%BB%88%E9%96%80%E6%A4%8D%E7%89%A9%E5%9C%92&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">廈門植物園</div>
-          <p class="spot-sub">雨林噴霧｜多肉區｜拍照熱點</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E7%92%B0%E5%B3%B6%E8%B7%AF&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">環島路</div>
-          <p class="spot-sub">海邊騎行/散步｜風景線</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E6%9B%BE%E5%8E%9D%E5%9E%B5&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">曾厝垵</div>
-          <p class="spot-sub">晚餐/小店｜夜晚氛圍好</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-      </div>
-
-      <div class="small" style="margin-top:14px;"><b>你新增的景點</b></div>
-      <div class="spot-grid" id="custom-day-3"></div>
-
-      <div class="actions" style="margin-top:12px;">
-        <button class="btn" type="button" data-add-spot="3">＋新增景點</button>
-        <button class="btn secondary" type="button" data-clear-spots="3">清空本日新增</button>
-      </div>
-    </div>
-  </details>
-
-  <!-- Day 4 -->
-  <details class="hotel">
-    <summary>
-      <div class="hotel-title">
-        <div class="hotel-top">Day 4</div>
-        <div class="hotel-name">最後巡禮與返程回高</div>
-        <div class="hotel-sub">貓街/鐵路文化公園 → 五通碼頭 → 水頭碼頭 → 金門市區午餐 → 金門機場 → 高雄</div>
-      </div>
-      <div class="chev">›</div>
-    </summary>
-
-    <div class="hotel-body">
-      <p><b>上午</b> 頂澳仔貓街 或 鐵路文化公園 散步</p>
-      <p><b>10:30 - 11:00</b> 從飯店出發前往廈門五通碼頭</p>
-      <p><b>11:30 - 12:00</b> 搭船返回金門水頭碼頭</p>
-      <p><b>12:30 - 14:00</b> 金門市區簡單午餐（廣東粥/蚵嗲）→ 前往金門機場辦理登機</p>
-      <p><b>15:10 - 16:10</b> 金門機場 → 返回高雄</p>
-
-      <div class="small" style="margin-top:10px;"><b>建議：</b>有保存期限的伴手禮建議這天早上或前一晚再買最保險。</div>
-
-      <div class="small" style="margin-top:12px;"><b>今日景點導航</b></div>
-      <div class="spot-grid" data-base-spots="day4">
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E9%A0%82%E6%BE%B3%E4%BB%94%E8%B2%93%E8%A1%97&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">頂澳仔貓街</div>
-          <p class="spot-sub">輕鬆散步｜拍照小點</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E9%90%B5%E8%B7%AF%E6%96%87%E5%8C%96%E5%85%AC%E5%9C%92%20%E5%BB%88%E9%96%80&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">鐵路文化公園</div>
-          <p class="spot-sub">最後巡禮｜散步放空</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E5%BB%88%E9%96%80%E4%BA%94%E9%80%9A%E7%A2%BC%E9%A0%AD&city=%E5%8E%A6%E9%97%A8&view=map&src=xiamen-trip-app">
-          <div class="spot-title">廈門五通碼頭</div>
-          <p class="spot-sub">返程搭船｜提早到較安心</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E6%B0%B4%E9%A0%AD%E7%A2%BC%E9%A0%AD&city=%E9%87%91%E9%96%80&view=map&src=xiamen-trip-app">
-          <div class="spot-title">金門水頭碼頭</div>
-          <p class="spot-sub">入境/轉運｜接午餐行程</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-
-        <a class="spot-card" target="_blank" rel="noopener"
-           href="https://uri.amap.com/search?keyword=%E9%87%91%E9%96%80%E5%B0%9A%E7%BE%A9%E6%A9%9F%E5%A0%B4&city=%E9%87%91%E9%96%80&view=map&src=xiamen-trip-app">
-          <div class="spot-title">金門機場</div>
-          <p class="spot-sub">辦理登機｜返程回高雄</p>
-          <span class="spot-tag">點我導航 →</span>
-        </a>
-      </div>
-
-      <div class="small" style="margin-top:14px;"><b>你新增的景點</b></div>
-      <div class="spot-grid" id="custom-day-4"></div>
-
-      <div class="actions" style="margin-top:12px;">
-        <button class="btn" type="button" data-add-spot="4">＋新增景點</button>
-        <button class="btn secondary" type="button" data-clear-spots="4">清空本日新增</button>
-      </div>
-    </div>
-  </details>
+  <div id="days"></div>
 
   <div class="footer-nav">
     <a class="btn secondary" href="index.html">← 回首頁</a>
-    <span class="small">新增景點會儲存在本機（localStorage）並同步到首頁摘要</span>
+    <span class="small">已自動儲存</span>
   </div>
 
 </div>
 
+<!-- Tab Bar -->
+<nav class="tabbar">
+  <div class="tabs">
+    <a href="index.html"><div class="icon">🏠</div><div class="label">首頁</div></a>
+    <a class="active" href="itinerary.html"><div class="icon">📅</div><div class="label">行程</div></a>
+    <a href="transport.html"><div class="icon">🚇</div><div class="label">交通</div></a>
+    <a href="medical.html"><div class="icon">🏥</div><div class="label">醫療</div></a>
+  </div>
+</nav>
+
 <script>
 (() => {
-  const STORAGE_KEY = "xiamen_custom_spots_v1";
+  const KEY_V2 = "xiamen_itinerary_v2";
+  const KEY_OLD_CUSTOM = "xiamen_custom_spots_v1";
 
-  /** @returns {{[day:number]: Array<{name:string, note?:string, city?:string}>}} */
-  function loadAll() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-    catch { return {}; }
-  }
+  const dayMeta = [
+    { day: 1, title: "Day 1：抵達廈門與中山路之夜", sub: "中山路／八市／演武大橋夜景" },
+    { day: 2, title: "Day 2：鼓浪嶼與高空全景", sub: "鼓浪嶼／鐘鼓索道／沙坡尾" },
+    { day: 3, title: "Day 3：學術氣息與網紅植物園", sub: "南普陀／廈大／植物園／環島路" },
+    { day: 4, title: "Day 4：最後巡禮與返程", sub: "貓街或鐵路公園／回程" },
+  ];
 
-  function saveAll(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const baseInit = {
+    1: [
+      { name:"飯店入住", note:"抵達後先辦理入住/放行李", city:"厦门" },
+      { name:"中山路步行街", note:"晚餐/逛街/小吃", city:"厦门" },
+      { name:"八市（第八市場）", note:"在地小吃集中地", city:"厦门" },
+      { name:"演武大橋觀景平台", note:"夕陽與雙子塔夜景", city:"厦门" },
+    ],
+    2: [
+      { name:"鼓浪嶼", note:"建議早起出發，旺季需提前訂票", city:"厦门" },
+      { name:"鐘鼓索道", note:"俯瞰海景與城市視野", city:"厦门" },
+      { name:"沙坡尾", note:"咖啡店/港灣氛圍/夜景", city:"厦门" },
+    ],
+    3: [
+      { name:"南普陀寺", note:"香火鼎盛，建議早上前往", city:"厦门" },
+      { name:"廈門大學", note:"需預約，看上弦場/芙蓉隧道", city:"厦门" },
+      { name:"廈門植物園", note:"雨林噴霧/多肉區必拍", city:"厦门" },
+      { name:"環島路", note:"傍晚騎行/散步", city:"厦门" },
+      { name:"曾厝垵", note:"晚餐/文青小店", city:"厦门" },
+    ],
+    4: [
+      { name:"頂澳仔貓街", note:"二選一：貓街或鐵路文化公園", city:"厦门" },
+      { name:"鐵路文化公園", note:"二選一：散步拍照", city:"厦门" },
+      { name:"前往廈門五通碼頭", note:"建議預留時間（塞車/排隊）", city:"厦门" },
+      { name:"返回金門水頭碼頭", note:"銜接飛機請預留緩衝", city:"金门" },
+      { name:"前往金門機場", note:"辦理登機", city:"金门" },
+    ],
+  };
+
+  function uid() {
+    return "id_" + Math.random().toString(16).slice(2) + Date.now().toString(16);
   }
 
   function amapUrl(keyword, city) {
-    const k = encodeURIComponent(keyword.trim());
-    const c = encodeURIComponent((city || "").trim());
-    // city 可留空（高德會用預設）
-    return `https://uri.amap.com/search?keyword=${k}${c ? `&city=${c}` : ""}&view=map&src=xiamen-trip-app`;
+    const q = encodeURIComponent(keyword || "");
+    const c = encodeURIComponent(city || "厦门");
+    return `https://uri.amap.com/search?keyword=${q}&city=${c}&view=map&src=xiamen-trip-app`;
   }
 
-  function renderDay(day) {
-  const all = loadAll();
-  const list = all[day] || [];
-  const wrap = document.getElementById(`custom-day-${day}`);
-  if (!wrap) return;
-
-  wrap.innerHTML = "";
-  if (list.length === 0) {
-    wrap.innerHTML = `<div class="empty-note">尚未新增景點</div>`;
-    return;
+  function loadV2() {
+    try { return JSON.parse(localStorage.getItem(KEY_V2) || "null"); }
+    catch { return null; }
   }
 
-  list.forEach((item, index) => {
-    // 外層卡片（用 div，避免刪除按鈕塞在 <a> 裡不好點）
-    const card = document.createElement("div");
-    card.className = "spot-card spot-custom";
+  function saveV2(data) {
+    localStorage.setItem(KEY_V2, JSON.stringify(data));
+  }
 
-    const del = document.createElement("button");
-    del.className = "spot-delete";
-    del.type = "button";
-    del.setAttribute("aria-label", "刪除此景點");
-    del.textContent = "✕";
+  function loadOldCustom() {
+    try { return JSON.parse(localStorage.getItem(KEY_OLD_CUSTOM) || "{}"); }
+    catch { return {}; }
+  }
 
-    del.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+  // 初始化：寫入 base + 併入舊 custom（若存在）
+  function ensureInit() {
+    const existing = loadV2();
+    if (existing && typeof existing === "object") return existing;
 
-      const ok = confirm(`刪除「${item.name}」？`);
-      if (!ok) return;
+    const data = {};
+    for (const d of dayMeta) {
+      const list = (baseInit[d.day] || []).map(x => ({ id: uid(), ...x }));
+      data[d.day] = list;
+    }
 
-      const all2 = loadAll();
-      all2[day] = all2[day] || [];
-      all2[day].splice(index, 1);
-      saveAll(all2);
-      renderDay(day);
+    const old = loadOldCustom();
+    for (let day = 1; day <= 4; day++) {
+      const arr = Array.isArray(old[day]) ? old[day] : [];
+      arr.forEach(x => {
+        if (!x || !x.name) return;
+        data[day].push({
+          id: uid(),
+          name: String(x.name),
+          note: x.note ? String(x.note) : "你新增的景點",
+          city: x.city ? String(x.city) : "厦门",
+        });
+      });
+    }
+
+    saveV2(data);
+    return data;
+  }
+
+  function render() {
+    const data = ensureInit();
+    const root = document.getElementById("days");
+    root.innerHTML = "";
+
+    dayMeta.forEach(meta => {
+      const wrap = document.createElement("div");
+      wrap.className = "day-wrap";
+
+      const card = document.createElement("div");
+      card.className = "day-card";
+      card.dataset.dropDay = String(meta.day); // ✅ 讓「拖到 Day 標題區」也能判斷目標天
+
+      const head = document.createElement("div");
+      head.className = "day-head";
+
+      const left = document.createElement("div");
+      left.innerHTML = `
+        <div class="day-title">${meta.title}</div>
+        <div class="day-sub">${meta.sub}</div>
+        <div class="drop-hint">提示：長按 ☰ 0.25 秒拖曳／可拖到其他天（含標題區）</div>
+      `;
+
+      const actions = document.createElement("div");
+      actions.className = "day-actions";
+      actions.innerHTML = `
+        <button class="btn" type="button" data-add="${meta.day}">＋ 新增景點</button>
+        <button class="btn secondary" type="button" data-reset="${meta.day}">重設當天</button>
+      `;
+
+      head.appendChild(left);
+      head.appendChild(actions);
+
+      const ul = document.createElement("ul");
+      ul.className = "sortable";
+      ul.dataset.day = String(meta.day);
+
+      const list = Array.isArray(data[meta.day]) ? data[meta.day] : [];
+      if (list.length === 0) {
+        ul.innerHTML = `<div class="empty-note">尚無景點</div>`;
+      } else {
+        list.forEach(item => {
+          const li = document.createElement("li");
+          li.className = "spot-item";
+          li.dataset.id = item.id;
+
+          li.innerHTML = `
+            <div class="handle" title="長按拖曳">☰</div>
+            <div class="spot-main">
+              <div class="spot-name">${escapeHtml(item.name)}</div>
+              <div class="spot-note">${escapeHtml(item.note || "")}</div>
+              <div class="spot-tags">
+                <a class="tag" target="_blank" rel="noopener" href="${amapUrl(item.name, item.city)}">導航 →</a>
+                <button class="tag danger" type="button" data-del="${item.id}">刪除</button>
+              </div>
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+      }
+
+      card.appendChild(head);
+      card.appendChild(ul);
+      wrap.appendChild(card);
+      root.appendChild(wrap);
     });
 
-    const title = document.createElement("div");
-    title.className = "spot-title";
-    title.textContent = item.name;
-
-    const sub = document.createElement("p");
-    sub.className = "spot-sub";
-    sub.textContent = item.note ? item.note : (item.city ? `城市：${item.city}` : "自訂景點");
-
-    const nav = document.createElement("a");
-    nav.className = "spot-tag";
-    nav.target = "_blank";
-    nav.rel = "noopener";
-    nav.href = amapUrl(item.name, item.city);
-    nav.textContent = "點我導航 →";
-
-    card.appendChild(del);
-    card.appendChild(title);
-    card.appendChild(sub);
-    card.appendChild(nav);
-
-    wrap.appendChild(card);
-  });
-}
-
-  function addSpot(day) {
-    const defaultCity = (day === 4) ? "金門" : "廈門";
-    const name = prompt(`Day ${day}：輸入景點名稱（必填）`);
-    if (!name || !name.trim()) return;
-
-    const note = prompt("簡介/備註（可留空，例如：必吃/拍照點/門票/營業時間）") || "";
-    const city = prompt(`城市（可留空；預設：${defaultCity}）`, defaultCity) || defaultCity;
-
-    const all = loadAll();
-    all[day] = all[day] || [];
-    all[day].push({ name: name.trim(), note: note.trim(), city: city.trim() });
-    saveAll(all);
-
-    renderDay(day);
+    bindButtons();
+    bindDragAndDrop();
   }
 
-  function clearDay(day) {
-    const ok = confirm(`確定要清空 Day ${day} 你新增的景點嗎？`);
-    if (!ok) return;
-    const all = loadAll();
-    all[day] = [];
-    saveAll(all);
-    renderDay(day);
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
   }
 
-  // Bind buttons
-  document.querySelectorAll("[data-add-spot]").forEach((btn) => {
-    btn.addEventListener("click", () => addSpot(Number(btn.getAttribute("data-add-spot"))));
-  });
-  document.querySelectorAll("[data-clear-spots]").forEach((btn) => {
-    btn.addEventListener("click", () => clearDay(Number(btn.getAttribute("data-clear-spots"))));
-  });
+  function bindButtons() {
+    document.querySelectorAll("[data-add]").forEach(btn => {
+      btn.onclick = () => {
+        const day = Number(btn.dataset.add);
+        const name = prompt("新增景點名稱：");
+        if (!name) return;
 
-  // Initial render
-  [1,2,3,4].forEach(renderDay);
+        const note = prompt("簡介（可空白）：") || "";
+        const city = prompt("城市（預設：厦门，可填 金门）：", "厦门") || "厦门";
+
+        const data = ensureInit();
+        data[day] = data[day] || [];
+        data[day].push({ id: uid(), name: name.trim(), note: note.trim(), city: city.trim() });
+        saveV2(data);
+        render();
+      };
+    });
+
+    document.querySelectorAll("[data-reset]").forEach(btn => {
+      btn.onclick = () => {
+        const day = Number(btn.dataset.reset);
+        const ok = confirm("要重設此天為預設行程嗎？（會清掉你在這一天新增/調整的順序）");
+        if (!ok) return;
+
+        const data = ensureInit();
+        data[day] = (baseInit[day] || []).map(x => ({ id: uid(), ...x }));
+        saveV2(data);
+        render();
+      };
+    });
+
+    document.querySelectorAll("[data-del]").forEach(btn => {
+      btn.onclick = () => {
+        const id = btn.dataset.del;
+        const ok = confirm("刪除此景點？");
+        if (!ok) return;
+
+        const data = ensureInit();
+        for (let day = 1; day <= 4; day++) {
+          data[day] = (data[day] || []).filter(x => x.id !== id);
+        }
+        saveV2(data);
+        render();
+      };
+    });
+  }
+
+  // ===== 拖曳排序（Pointer Events, 手機可用） =====
+  let dragging = null; // {id, fromDay, li, ghost, placeholder, overUl, overDay}
+  let pressTimer = null;
+  let pressStart = null;
+
+  function clearTargets() {
+    document.querySelectorAll(".day-card").forEach(x => x.classList.remove("drag-target"));
+  }
+
+  function bindDragAndDrop() {
+    document.querySelectorAll(".handle").forEach(handle => {
+      handle.onpointerdown = (e) => {
+        e.preventDefault();
+
+        const li = handle.closest(".spot-item");
+        const ul = handle.closest(".sortable");
+        if (!li || !ul) return;
+
+        const id = li.dataset.id;
+        const fromDay = Number(ul.dataset.day);
+
+        // ✅ 長按 0.25 秒才開始拖曳
+        pressStart = { x: e.clientX, y: e.clientY };
+        pressTimer = setTimeout(() => {
+          pressTimer = null;
+          startDrag(e, { id, fromDay, li, ul });
+        }, 250);
+
+        const cancelPress = () => {
+          if (pressTimer) {
+            clearTimeout(pressTimer);
+            pressTimer = null;
+          }
+          window.removeEventListener("pointerup", cancelPress);
+          window.removeEventListener("pointermove", cancelOnMove);
+        };
+
+        const cancelOnMove = (ev) => {
+          // 手指有移動就取消「長按啟動」（避免滑動頁面誤觸）
+          if (!pressStart) return;
+          const dx = Math.abs(ev.clientX - pressStart.x);
+          const dy = Math.abs(ev.clientY - pressStart.y);
+          if (dx > 10 || dy > 10) cancelPress();
+        };
+
+        window.addEventListener("pointerup", cancelPress, { once: true });
+        window.addEventListener("pointermove", cancelOnMove);
+      };
+    });
+  }
+
+  function startDrag(e, ctx) {
+    clearTargets();
+
+    const rect = ctx.li.getBoundingClientRect();
+
+    const ghost = ctx.li.cloneNode(true);
+    ghost.classList.add("drag-ghost");
+    ghost.style.width = rect.width + "px";
+
+    const placeholder = document.createElement("div");
+    placeholder.className = "placeholder";
+
+    ctx.li.parentNode.insertBefore(placeholder, ctx.li.nextSibling);
+    ctx.li.style.display = "none";
+
+    document.body.appendChild(ghost);
+
+    dragging = {
+      id: ctx.id,
+      fromDay: ctx.fromDay,
+      li: ctx.li,
+      ghost,
+      placeholder,
+      overDay: ctx.fromDay,
+      overUl: ctx.ul,
+    };
+
+    moveGhost(e.clientX, e.clientY);
+
+    window.addEventListener("pointermove", onMove, { passive:false });
+    window.addEventListener("pointerup", onUp, { passive:false, once:true });
+  }
+
+  function moveGhost(x, y) {
+    if (!dragging) return;
+    dragging.ghost.style.left = x + "px";
+    dragging.ghost.style.top = y + "px";
+  }
+
+  function resolveTargetByPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    if (!el) return null;
+
+    // ✅ 3) 拖到 Day 標題區也能移動：找最近的 day-card[data-drop-day]
+    const dayCard = el.closest(".day-card[data-drop-day]");
+    if (dayCard) {
+      const day = Number(dayCard.dataset.dropDay);
+      const ul = dayCard.querySelector(`.sortable[data-day="${day}"]`);
+      return { dayCard, day, ul };
+    }
+
+    // fallback：若落在 sortable 內
+    const ul = el.closest(".sortable");
+    if (ul) {
+      const day = Number(ul.dataset.day);
+      const dayCard2 = ul.closest(".day-card[data-drop-day]");
+      return { dayCard: dayCard2, day, ul };
+    }
+
+    return null;
+  }
+
+  function onMove(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    moveGhost(e.clientX, e.clientY);
+
+    const t = resolveTargetByPoint(e.clientX, e.clientY);
+    if (!t || !t.ul) return;
+
+    dragging.overDay = t.day;
+    dragging.overUl = t.ul;
+
+    // ✅ 2) 拖到其他 Day 卡片自動高亮
+    clearTargets();
+    if (t.dayCard) t.dayCard.classList.add("drag-target");
+
+    // 插入 placeholder（依最靠近的 spot-item）
+    const items = [...t.ul.querySelectorAll(".spot-item")].filter(x => x.style.display !== "none");
+    let inserted = false;
+
+    for (const item of items) {
+      const r = item.getBoundingClientRect();
+      const mid = r.top + r.height / 2;
+      if (e.clientY < mid) {
+        t.ul.insertBefore(dragging.placeholder, item);
+        inserted = true;
+        break;
+      }
+    }
+    if (!inserted) t.ul.appendChild(dragging.placeholder);
+  }
+
+  function onUp() {
+    if (!dragging) return;
+
+    window.removeEventListener("pointermove", onMove);
+    clearTargets();
+
+    const targetUl = dragging.overUl || dragging.placeholder.closest(".sortable");
+    const toDay = Number(targetUl.dataset.day);
+
+    // 視覺：把原 li 放到 placeholder 位置
+    dragging.li.style.display = "";
+    targetUl.insertBefore(dragging.li, dragging.placeholder);
+
+    // 清理
+    dragging.ghost.remove();
+    dragging.placeholder.remove();
+
+    // 更新資料
+    const data = ensureInit();
+    const fromDay = dragging.fromDay;
+
+    // 抽出 moved
+    let moved = null;
+    for (let d = 1; d <= 4; d++) {
+      const idx = (data[d] || []).findIndex(x => x.id === dragging.id);
+      if (idx >= 0) {
+        moved = data[d][idx];
+        data[d].splice(idx, 1);
+        break;
+      }
+    }
+    if (!moved) { dragging = null; render(); return; }
+
+    // 依 targetUl 的 li 順序重建 toDay
+    const idsInTo = [...targetUl.querySelectorAll(".spot-item")].map(li => li.dataset.id);
+
+    const oldTo = data[toDay] || [];
+    if (!oldTo.find(x => x.id === moved.id)) oldTo.push(moved);
+    data[toDay] = oldTo;
+
+    data[toDay] = idsInTo.map(id => data[toDay].find(x => x.id === id)).filter(Boolean);
+
+    // fromDay 若跨天也重排
+    const fromUl = document.querySelector(`.sortable[data-day="${fromDay}"]`);
+    if (fromUl && fromDay !== toDay) {
+      const idsInFrom = [...fromUl.querySelectorAll(".spot-item")].map(li => li.dataset.id);
+      data[fromDay] = idsInFrom.map(id => (data[fromDay]||[]).find(x => x.id === id)).filter(Boolean);
+    }
+
+    saveV2(data);
+    dragging = null;
+    render();
+  }
+
+  render();
 })();
 </script>
 
