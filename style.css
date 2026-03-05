@@ -212,3 +212,87 @@ details.hotel[open] .chev{ transform:rotate(90deg); }
   color:var(--brand);
   font-weight:700;
 }
+
+/* =========================
+   iOS App Card Style (V1)
+   貼在 style.css 最底部用來覆蓋
+   ========================= */
+
+:root{
+  --ios-radius: 20px;
+  --ios-radius-sm: 14px;
+  --ios-shadow: 0 14px 30px rgba(0,0,0,.08);
+  --ios-shadow-sm: 0 8px 18px rgba(0,0,0,.07);
+  --ios-border: 1px solid rgba(15,23,42,.08);
+  --ios-sep: 1px solid rgba(15,23,42,.07);
+}
+
+/* 讓整體像 iOS 的留白與字體節奏 */
+.container{ padding-bottom: 26px; }
+header{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255,255,255,.72);
+  border-bottom: 1px solid rgba(15,23,42,.06);
+}
+
+/* 通用卡片：像 iOS 的 group card */
+.card{
+  border: var(--ios-border) !important;
+  border-radius: var(--ios-radius) !important;
+  background: rgba(255,255,255,.82) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--ios-shadow) !important;
+  padding: 16px !important;
+}
+
+/* 文字層級更像 App */
+.card h2{ margin:0 0 10px 0; font-size: 18px; letter-spacing: .2px; }
+.small{ opacity: .85; }
+
+/* iOS 風格按鈕（像 pill） */
+.actions{ gap:10px !important; }
+.btn{
+  border-radius: 999px !important;
+  padding: 10px 14px !important;
+  font-weight: 750 !important;
+  letter-spacing: .2px;
+  border: 1px solid rgba(15,23,42,.10) !important;
+  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  transform: translateY(0);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+.btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,.10); }
+.btn:active{ transform: translateY(0px); filter: brightness(.98); }
+
+.btn.secondary{
+  background: rgba(255,255,255,.85) !important;
+  border: 1px solid rgba(15,23,42,.10) !important;
+}
+
+/* --- details/summary 變成 iOS 可點擊 cell + 展開內容 --- */
+details.hotel{
+  border: var(--ios-border) !important;
+  border-radius: var(--ios-radius) !important;
+  background: rgba(255,255,255,.82) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--ios-shadow) !important;
+  overflow: hidden;
+  margin: 14px 0 !important;
+}
+
+details.hotel > summary{
+  padding: 16px 16px !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+details.hotel > summary:active
