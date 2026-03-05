@@ -1,83 +1,137 @@
-<!DOCTYPE html><html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小黑的愛心之廈門自由行助手</title>
-<link rel="stylesheet" href="style.css">
-</head><body><header>❤️ 小黑的愛心之廈門自由行助手</header><div class="container"><div class="card">
-<h2>行程摘要</h2><div id="itinerarySummary"></div></div><div class="card"><h2>功能</h2><div class="app-grid"><a href="itinerary.html">
-<div class="app-icon">📅</div>
-<div class="app-label">行程</div>
-</a><a href="food.html">
-<div class="app-icon">🍜</div>
-<div class="app-label">美食</div>
-</a><a href="hotel.html">
-<div class="app-icon">🏨</div>
-<div class="app-label">飯店</div>
-</a><a href="transport.html">
-<div class="app-icon">🚇</div>
-<div class="app-label">交通</div>
-</a><a href="taxi.html">
-<div class="app-icon">🚕</div>
-<div class="app-label">叫車</div>
-</a><a href="souvenir.html">
-<div class="app-icon">🎁</div>
-<div class="app-label">名產</div>
-</a><a href="medical.html">
-<div class="app-icon">🏥</div>
-<div class="app-label">醫療</div>
-</a><a href="tips.html">
-<div class="app-icon">⚠</div>
-<div class="app-label">注意</div>
-</a></div></div></div><nav class="tabbar">
-<div class="tabs"><a class="active" href="index.html">
-<div class="icon">🏠</div>
-<div class="label">首頁</div>
-</a><a href="itinerary.html">
-<div class="icon">📅</div>
-<div class="label">行程</div>
-</a><a href="transport.html">
-<div class="icon">🚇</div>
-<div class="label">交通</div>
-</a><a href="medical.html">
-<div class="icon">🏥</div>
-<div class="label">醫療</div>
-</a></div>
-</nav><script>
 
-function renderSummary(){
+<!-- ✅ 強制繞過快取，確保拿到最新 CSS -->
+<link rel="stylesheet" href="style.css?v=20260305">
 
-const container=document.getElementById("itinerarySummary")
+<!-- ✅ TabBar 備援樣式：就算 CSS 因快取沒更新，TabBar 也不會跑版 -->
+<style>
+  body{ padding-bottom:92px; }
+  .tabbar{
+    position:fixed; left:0; right:0; bottom:0;
+    padding:10px 12px 14px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    border-top:1px solid rgba(15,23,42,.07);
+    z-index:999;
+  }
+  .tabbar .tabs{
+    max-width:860px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+  }
+  .tabbar a{
+    text-decoration:none;
+    color:#64748b;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px; padding:8px 6px; border-radius:14px;
+  }
+  .tabbar a:active{ background:rgba(0,0,0,.06); }
+  .tabbar .icon{ font-size:18px; line-height:1; }
+  .tabbar .label{ font-size:11px; font-weight:800; letter-spacing:.2px; }
+  .tabbar a.active{
+    color:#007aff;
+    background:rgba(0,122,255,.10);
+    border:1px solid rgba(0,122,255,.15);
+  }
+</style>
+</head>
 
-const itinerary=JSON.parse(localStorage.getItem("itineraryData")||"{}")
+<body>
 
-container.innerHTML=""
+<header>❤️ 小黑的愛心之廈門自由行助手</header>
 
-Object.keys(itinerary).forEach(day=>{
+<div class="container">
 
-const spots=itinerary[day]
+  <div class="card">
+    <h2>行程摘要</h2>
+    <div id="itinerarySummary"></div>
+  </div>
 
-const card=document.createElement("div")
+  <div class="card">
+    <h2>功能</h2>
 
-card.className="day-card"
+    <div class="app-grid">
+      <a href="itinerary.html"><div class="app-icon">📅</div><div class="app-label">行程</div></a>
+      <a href="food.html"><div class="app-icon">🍜</div><div class="app-label">美食</div></a>
+      <a href="hotel.html"><div class="app-icon">🏨</div><div class="app-label">飯店</div></a>
+      <a href="transport.html"><div class="app-icon">🚇</div><div class="app-label">交通</div></a>
+      <a href="taxi.html"><div class="app-icon">🚕</div><div class="app-label">叫車</div></a>
+      <a href="souvenir.html"><div class="app-icon">🎁</div><div class="app-label">名產</div></a>
+      <a href="medical.html"><div class="app-icon">🏥</div><div class="app-label">醫療</div></a>
+      <a href="tips.html"><div class="app-icon">⚠</div><div class="app-label">注意</div></a>
+    </div>
+  </div>
 
-let html=`<div class="day-title">${day}</div>`
+</div>
 
-spots.forEach(spot=>{
+<nav class="tabbar">
+  <div class="tabs">
+    <a class="active" href="index.html"><div class="icon">🏠</div><div class="label">首頁</div></a>
+    <a href="itinerary.html"><div class="icon">📅</div><div class="label">行程</div></a>
+    <a href="transport.html"><div class="icon">🚇</div><div class="label">交通</div></a>
+    <a href="medical.html"><div class="icon">🏥</div><div class="label">醫療</div></a>
+  </div>
+</nav>
 
-html+=`<div class="day-spot">📍 ${spot.name}</div>`
+<script>
+(() => {
+  const STORAGE_KEY = "xiamen_custom_spots_v1";
 
-})
+  // ✅ 預設行程（與 itinerary.html 一致）
+  const base = [
+    { day: "Day 1", title: "抵達廈門與中山路之夜", spots: ["中山路步行街", "八市（第八市場）", "演武大橋觀景平台", "雙子塔（世茂海峽大廈）"] },
+    { day: "Day 2", title: "鼓浪嶼與高空全景", spots: ["鼓浪嶼", "鐘鼓索道", "沙坡尾"] },
+    { day: "Day 3", title: "學術氣息與網紅植物園", spots: ["南普陀寺", "廈門大學", "廈門植物園", "環島路", "曾厝垵"] },
+    { day: "Day 4", title: "最後巡禮與返程回高", spots: ["頂澳仔貓街", "鐵路文化公園", "廈門五通碼頭", "金門水頭碼頭", "金門機場"] },
+  ];
 
-card.innerHTML=html
+  function loadCustom() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+    catch { return {}; }
+  }
 
-container.appendChild(card)
+  function renderSummary() {
+    const container = document.getElementById("itinerarySummary");
+    const custom = loadCustom();
 
-})
+    container.innerHTML = "";
 
-}
+    base.forEach((d, idx) => {
+      const dayNum = idx + 1;
+      const extra = (custom[dayNum] || []).map(x => x && x.name ? x.name : null).filter(Boolean);
 
-renderSummary()
+      const card = document.createElement("div");
+      card.className = "day-card";
 
-</script></body>
+      let html = `
+        <div class="day-title">${d.day}｜${d.title}</div>
+      `;
+
+      // base spots
+      d.spots.forEach(name => {
+        html += `<div class="day-spot">📍 ${name}</div>`;
+      });
+
+      // custom spots
+      if (extra.length) {
+        html += `<div class="day-spot" style="margin-top:8px; font-weight:800;">你新增的景點</div>`;
+        extra.forEach(name => {
+          html += `<div class="day-spot">✨ ${name}</div>`;
+        });
+      }
+
+      card.innerHTML = html;
+      container.appendChild(card);
+    });
+  }
+
+  renderSummary();
+})();
+</script>
+
+</body>
 </html>
